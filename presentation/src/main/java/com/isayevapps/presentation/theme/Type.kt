@@ -1,4 +1,4 @@
-package com.isayevapps.animequotes.ui.theme
+package com.isayevapps.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
