@@ -10,7 +10,7 @@ class AnimeRepositoryImpl(private val apiService: AnimeService): AnimeRepository
             val animeResponse = apiService.getAnime()
             val animes = animeResponse.data.map { animeInfo ->
                 AnimeItem(
-                    title = animeInfo.title,
+                    title = animeInfo.titleEng ?: animeInfo.title,
                     imgUrl = animeInfo.images.jpg.imageUrl
                 )
             }

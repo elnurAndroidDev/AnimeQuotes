@@ -17,7 +17,10 @@ data class Pagination(
 )
 
 data class AnimeInfo(
+    @SerializedName("title")
     val title: String,
+    @SerializedName("title_english")
+    val titleEng: String?,
     val images: Images
 )
 
