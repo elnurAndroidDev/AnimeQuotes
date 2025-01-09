@@ -27,7 +27,15 @@ import com.isayevapps.presentation.screens.animetitles.ProvideViewModel
 
 enum class Screen(val route: String) {
     AnimeTitleScreen("anim_title"),
-    AnimeDetail("anime_detail/{itemId}")
+    AnimeDetail("anime_detail/{title}");
+
+    fun createRoute(vararg args: Any): String {
+        var formattedRoute = route
+        args.forEach { arg ->
+            formattedRoute = formattedRoute.replaceFirst(Regex("\\{.*?\\}"), arg.toString())
+        }
+        return formattedRoute
+    }
 }
 
 
@@ -43,13 +51,6 @@ fun AnimeQuotesApp(application: Application, modifier: Modifier = Modifier) {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-//            val homeViewModel = (application as ProvideViewModel).provideViewModel()
-//            AnimeTitlesScreen(
-//                homeViewModel.uiState,
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(top = innerPadding.calculateTopPadding())
-//            )
             NavHost(
                 navController = navController,
                 startDestination = Screen.AnimeTitleScreen.route,
@@ -67,10 +68,10 @@ fun AnimeQuotesApp(application: Application, modifier: Modifier = Modifier) {
                 }
                 composable(
                     route = Screen.AnimeDetail.route,
-                    arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+                    arguments = listOf(navArgument("title") { type = NavType.StringType })
                 ) { backStackEntry ->
-                    val itemId = backStackEntry.arguments?.getInt("itemId") ?: 0
-                    AnimeDetailsScreen()
+                    val title = backStackEntry.arguments?.getString("title") ?: ""
+                    AnimeDetailsScreen(title)
                 }
             }
         }

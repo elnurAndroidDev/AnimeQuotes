@@ -1,6 +1,7 @@
 package com.isayevapps.presentation.screens.animetitles
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,12 +21,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.isayevapps.domain.AnimeItem
+import com.isayevapps.presentation.Screen
 
 @Composable
-fun AnimeTitlesScreen(uiState: AnimeTitlesScreenUiState, navController: NavController, modifier: Modifier = Modifier) {
+fun AnimeTitlesScreen(
+    uiState: AnimeTitlesScreenUiState,
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     when (uiState) {
         is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)
-        is AnimeTitlesScreenUiState.Success -> TitlesGrid(titles = uiState.titles, modifier = modifier)
+        is AnimeTitlesScreenUiState.Success -> TitlesGrid(
+            titles = uiState.titles,
+            onTitleClick = { title ->
+                navController.navigate(
+                    Screen.AnimeDetail.createRoute(title)
+                )
+            },
+            modifier = modifier
+        )
+
         is AnimeTitlesScreenUiState.Error -> ErrorScreen(modifier = modifier)
     }
 }
@@ -60,7 +75,7 @@ fun TitlesGrid(
         AnimeItem("img", "title"),
         AnimeItem("img", "title"),
         AnimeItem("img", "title"),
-    ), modifier: Modifier = Modifier
+    ), onTitleClick: (String) -> Unit = {}, modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -68,7 +83,14 @@ fun TitlesGrid(
         contentPadding = PaddingValues(4.dp)
     ) {
         items(titles) { title ->
-            TitleItem(title, modifier = Modifier.fillMaxWidth().padding(4.dp))
+            TitleItem(
+                title, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .clickable {
+                        onTitleClick(title.title)
+                    }
+            )
         }
     }
 }

@@ -41,7 +41,7 @@ import com.isayevapps.presentation.theme.Stroke
 
 
 @Composable
-fun AnimeDetailsScreen(modifier: Modifier = Modifier) {
+fun AnimeDetailsScreen(title: String, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -86,7 +86,7 @@ fun AnimeDetailsScreen(modifier: Modifier = Modifier) {
             }
         }
         Text(
-            text = "Anime Title",
+            text = title,
             fontSize = 24.sp,
             color = Color.White,
             fontWeight = FontWeight.Bold,
@@ -149,5 +149,5 @@ fun InfoBox(ico: Int, type: String = "", text: String = "", modifier: Modifier =
 )
 @Composable
 private fun AnimeDetailsScreenPreview() {
-    AnimeDetailsScreen()
+    AnimeDetailsScreen("Naruto")
 }
