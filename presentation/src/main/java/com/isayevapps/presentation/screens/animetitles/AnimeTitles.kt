@@ -18,10 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.isayevapps.domain.AnimeItem
 
 @Composable
-fun AnimeTitlesScreen(uiState: AnimeTitlesScreenUiState, modifier: Modifier = Modifier) {
+fun AnimeTitlesScreen(uiState: AnimeTitlesScreenUiState, navController: NavController, modifier: Modifier = Modifier) {
     when (uiState) {
         is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)
         is AnimeTitlesScreenUiState.Success -> TitlesGrid(titles = uiState.titles, modifier = modifier)

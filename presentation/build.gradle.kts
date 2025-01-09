@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.constraintlayout.compose)
 
     //Coil
     implementation(libs.coil.compose)
@@ -56,6 +57,7 @@ dependencies {
 
     implementation(libs.material)
     implementation(project(":domain"))
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
