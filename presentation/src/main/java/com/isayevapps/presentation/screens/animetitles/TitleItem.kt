@@ -30,13 +30,13 @@ import com.isayevapps.domain.cloud.AnimeItem
 import com.isayevapps.presentation.R
 
 @Composable
-fun TitleItem(title: AnimeItem, modifier: Modifier = Modifier) {
+fun TitleItem(title: String, imgUrl: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.clip(RoundedCornerShape(16.dp))
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(title.imgUrl)
+                .data(imgUrl)
                 .crossfade(true)
                 .placeholder(R.drawable.placeholder_img)
                 .build(),
@@ -61,7 +61,7 @@ fun TitleItem(title: AnimeItem, modifier: Modifier = Modifier) {
                 }
         )
         Text(
-            text = title.title,
+            text = title,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
             color = Color.White,
@@ -76,5 +76,5 @@ fun TitleItem(title: AnimeItem, modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun TitlePreview() {
-    TitleItem(title = AnimeItem("img", "title"), Modifier.width(200.dp))
+    TitleItem(imgUrl = "img", title = "title", modifier = Modifier.width(200.dp))
 }

@@ -68,27 +68,24 @@ fun LoadingScreen(modifier: Modifier) {
 
 @Composable
 fun TitlesGrid(
-    titles: List<AnimeItem> = listOf(
-        AnimeItem("img", "title"),
-        AnimeItem("img", "title"),
-        AnimeItem("img", "title"),
-        AnimeItem("img", "title"),
-        AnimeItem("img", "title"),
-        AnimeItem("img", "title"),
-    ), onTitleClick: (String) -> Unit = {}, modifier: Modifier = Modifier
+    titles: List<AnimeItem> = listOf(),
+    onTitleClick: (String) -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
-        items(titles) { title ->
+        items(titles) { anime ->
             TitleItem(
-                title, modifier = Modifier
+                title = anime.title,
+                imgUrl = anime.imgUrl,
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp)
                     .clickable {
-                        onTitleClick(title.title)
+                        onTitleClick(anime.title)
                     }
             )
         }
