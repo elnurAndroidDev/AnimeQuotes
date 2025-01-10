@@ -1,6 +1,7 @@
-package com.isayevapps.domain.cloud
+package com.isayevapps.domain
 
 data class AnimeItem(
+    val animeId: Int,
     val title: String,
     val imgUrl: String,
     val synopsis: String,

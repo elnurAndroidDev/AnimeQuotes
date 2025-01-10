@@ -1,6 +1,6 @@
 package com.isayevapps.presentation.screens.animetitles
 
-import com.isayevapps.domain.cloud.AnimeItem
+import com.isayevapps.domain.AnimeItem
 
 interface AnimeTitlesScreenUiState {
     data class Success(val titles: List<AnimeItem>) : AnimeTitlesScreenUiState

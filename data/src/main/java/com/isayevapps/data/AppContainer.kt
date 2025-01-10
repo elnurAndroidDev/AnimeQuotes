@@ -1,5 +1,7 @@
 package com.isayevapps.data
 
+import com.isayevapps.data.cloud.AnimeCloudRepositoryImpl
+import com.isayevapps.data.cloud.AnimeService
 import com.isayevapps.domain.cloud.AnimeCloudRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

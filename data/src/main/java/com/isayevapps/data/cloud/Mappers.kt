@@ -1,9 +1,10 @@
-package com.isayevapps.data
+package com.isayevapps.data.cloud
 
-import com.isayevapps.domain.cloud.AnimeItem
+import com.isayevapps.domain.AnimeItem
 
 fun AnimeInfo.toAnimeItem(): AnimeItem {
     return AnimeItem(
+        animeId = this.animeId,
         title = this.titleEng ?: this.title,
         imgUrl = this.images.jpg.imageUrl,
         type = type,

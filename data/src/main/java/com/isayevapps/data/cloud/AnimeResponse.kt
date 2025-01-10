@@ -1,4 +1,4 @@
-package com.isayevapps.data
+package com.isayevapps.data.cloud
 
 import com.google.gson.annotations.SerializedName
 
@@ -17,6 +17,8 @@ data class Pagination(
 )
 
 data class AnimeInfo(
+    @SerializedName("mal_id")
+    val animeId: Int,
     @SerializedName("title")
     val title: String,
     @SerializedName("title_english")

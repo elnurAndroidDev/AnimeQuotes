@@ -26,7 +26,6 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.request.placeholder
-import com.isayevapps.domain.cloud.AnimeItem
 import com.isayevapps.presentation.R
 
 @Composable

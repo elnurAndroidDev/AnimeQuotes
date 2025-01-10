@@ -1,4 +1,4 @@
-package com.isayevapps.data
+package com.isayevapps.data.cloud
 
 import retrofit2.http.GET
 
