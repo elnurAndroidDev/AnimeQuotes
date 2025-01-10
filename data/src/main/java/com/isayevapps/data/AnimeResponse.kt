@@ -21,7 +21,13 @@ data class AnimeInfo(
     val title: String,
     @SerializedName("title_english")
     val titleEng: String?,
-    val images: Images
+    val images: Images,
+    val type: String,
+    val episodes: Int,
+    val score: Double,
+    val synopsis: String,
+    val genres: List<Genre>,
+    val aired: Aired
 )
 
 data class Images(
@@ -33,4 +39,13 @@ data class Jpg(
     val imageUrl: String,
     @SerializedName("large_image_url")
     val largeImageUrl: String
+)
+
+data class Genre(
+    val name: String
+)
+
+data class Aired(
+    val from: String,
+    val to: String?
 )

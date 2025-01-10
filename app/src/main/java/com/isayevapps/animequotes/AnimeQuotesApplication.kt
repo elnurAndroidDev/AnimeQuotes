@@ -12,7 +12,7 @@ class AnimeQuotesApplication : Application(), ProvideViewModel {
     override fun onCreate() {
         super.onCreate()
         appContainer = DefaultAppContainer()
-        viewModel = AnimeTitlesViewModel(appContainer.animeRepository)
+        viewModel = AnimeTitlesViewModel(appContainer.animeCloudRepository)
     }
 
     override fun provideViewModel(): AnimeTitlesViewModel {

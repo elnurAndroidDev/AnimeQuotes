@@ -1,4 +1,4 @@
-package com.isayevapps.domain
+package com.isayevapps.domain.cloud
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T) : Resource<T>(data = data)

@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.AnimeRepository
-import com.isayevapps.domain.Resource
+import com.isayevapps.domain.cloud.AnimeCloudRepository
+import com.isayevapps.domain.cloud.Resource
 import kotlinx.coroutines.launch
 
 class AnimeTitlesViewModel(
-    private val repository: AnimeRepository
+    private val repository: AnimeCloudRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf<AnimeTitlesScreenUiState>(AnimeTitlesScreenUiState.Loading)

@@ -1,11 +1,11 @@
 package com.isayevapps.data
 
-import com.isayevapps.domain.AnimeRepository
+import com.isayevapps.domain.cloud.AnimeCloudRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 interface AppContainer {
-    val animeRepository: AnimeRepository
+    val animeCloudRepository: AnimeCloudRepository
 }
 
 class DefaultAppContainer : AppContainer {
@@ -29,7 +29,7 @@ class DefaultAppContainer : AppContainer {
     /**
      * DI implementation for Mars photos repository
      */
-    override val animeRepository: AnimeRepository by lazy {
-        AnimeRepositoryImpl(retrofitService)
+    override val animeCloudRepository: AnimeCloudRepository by lazy {
+        AnimeCloudRepositoryImpl(retrofitService)
     }
 }
