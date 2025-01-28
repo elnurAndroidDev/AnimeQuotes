@@ -1,5 +1,6 @@
-package com.isayevapps.data.cloud
+package com.isaevapps.data.cloud
 
+import com.isaevapps.data.toAnimeItem
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.AnimeCloudRepository
 import com.isayevapps.domain.cloud.Resource

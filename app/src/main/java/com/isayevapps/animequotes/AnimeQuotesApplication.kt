@@ -1,21 +1,16 @@
 package com.isayevapps.animequotes
 
 import android.app.Application
-import com.isayevapps.data.AppContainer
-import com.isayevapps.data.DefaultAppContainer
-import com.isayevapps.presentation.screens.animetitles.AnimeTitlesViewModel
-import com.isayevapps.presentation.screens.animetitles.ProvideViewModel
+import com.isaevapps.data.AppContainer
+import com.isaevapps.data.DefaultAppContainer
+import com.isayevapps.domain.cloud.usecases.GetAnimeTitlesUseCase
 
-class AnimeQuotesApplication : Application(), ProvideViewModel {
+class AnimeQuotesApplication : Application(){
     lateinit var appContainer: AppContainer
-    lateinit var viewModel: AnimeTitlesViewModel
+    lateinit var getAnimeTitlesUseCase: GetAnimeTitlesUseCase
     override fun onCreate() {
         super.onCreate()
-        appContainer = DefaultAppContainer()
-        viewModel = AnimeTitlesViewModel(appContainer.animeCloudRepository)
-    }
-
-    override fun provideViewModel(): AnimeTitlesViewModel {
-        return viewModel
+        appContainer = DefaultAppContainer(this)
+        getAnimeTitlesUseCase = GetAnimeTitlesUseCase(appContainer.animeCloudRepository)
     }
 }

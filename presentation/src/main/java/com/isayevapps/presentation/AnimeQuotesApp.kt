@@ -22,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.isayevapps.presentation.screens.animedetails.AnimeDetailsScreen
 import com.isayevapps.presentation.screens.animetitles.AnimeTitlesScreen
-import com.isayevapps.presentation.screens.animetitles.ProvideViewModel
 
 
 enum class Screen(val route: String) {
@@ -61,9 +60,7 @@ fun AnimeQuotesApp(application: Application, modifier: Modifier = Modifier) {
                     AnimeTitlesScreen(
                         homeViewModel.uiState,
                         navController,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = innerPadding.calculateTopPadding())
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
                 composable(

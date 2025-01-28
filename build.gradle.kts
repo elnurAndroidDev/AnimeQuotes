@@ -5,4 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.android.library) apply false
+    id("androidx.room") version "2.6.1" apply false
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29" apply false
+    id("com.google.dagger.hilt.android") version "2.51.1" apply false
 }
