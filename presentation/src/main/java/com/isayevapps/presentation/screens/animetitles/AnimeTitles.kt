@@ -27,7 +27,7 @@ import com.isayevapps.presentation.Screen
 fun AnimeTitlesScreen(
     uiState: AnimeTitlesScreenUiState,
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)

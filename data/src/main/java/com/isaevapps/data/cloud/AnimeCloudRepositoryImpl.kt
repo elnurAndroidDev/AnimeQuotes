@@ -4,8 +4,9 @@ import com.isaevapps.data.toAnimeItem
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.AnimeCloudRepository
 import com.isayevapps.domain.cloud.Resource
+import javax.inject.Inject
 
-class AnimeCloudRepositoryImpl(private val apiService: AnimeService) : AnimeCloudRepository {
+class AnimeCloudRepositoryImpl @Inject constructor(private val apiService: AnimeService) : AnimeCloudRepository {
     override suspend fun getAnime(): Resource<List<AnimeItem>> {
         return try {
             val animeResponse = apiService.getAnime()

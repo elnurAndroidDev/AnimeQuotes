@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.isayevapps.presentation.screens.animedetails.AnimeDetailsScreen
 import com.isayevapps.presentation.screens.animetitles.AnimeTitlesScreen
+import com.isayevapps.presentation.screens.animetitles.AnimeTitlesViewModel
 
 
 enum class Screen(val route: String) {
@@ -40,7 +42,7 @@ enum class Screen(val route: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimeQuotesApp(application: Application, modifier: Modifier = Modifier) {
+fun AnimeQuotesApp(modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val navController = rememberNavController()
     Scaffold(
@@ -56,7 +58,7 @@ fun AnimeQuotesApp(application: Application, modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable(Screen.AnimeTitleScreen.route) {
-                    val homeViewModel = (application as ProvideViewModel).provideViewModel()
+                    val homeViewModel = hiltViewModel<AnimeTitlesViewModel>()
                     AnimeTitlesScreen(
                         homeViewModel.uiState,
                         navController,
