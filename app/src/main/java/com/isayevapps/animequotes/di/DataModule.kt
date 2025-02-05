@@ -1,12 +1,12 @@
 package com.isayevapps.animequotes.di
 
 import android.content.Context
-import androidx.room.Room
 import com.isaevapps.data.cloud.AnimeService
-import com.isaevapps.data.local.AnimeDao
+import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
-import com.isayevapps.domain.cloud.AnimeCloudRepository
-import com.isayevapps.domain.cloud.usecases.GetAnimeTitlesUseCase
+import com.isaevapps.data.local.dao.RemoteKeysDao
+import com.isayevapps.domain.repository.Repository
+import com.isayevapps.domain.usecase.GetAnimeUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object DataModule {
 
     @Provides
     @Singleton
@@ -45,8 +45,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAnimeTitlesUseCase(repository: AnimeCloudRepository): GetAnimeTitlesUseCase {
-        return GetAnimeTitlesUseCase(repository)
+    fun provideRemoteKeysDao(database: AnimeDataBase): RemoteKeysDao {
+        return database.remoteKeysDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAnimeTitlesUseCase(repository: Repository): GetAnimeUseCase {
+        return GetAnimeUseCase(repository)
     }
 
 }

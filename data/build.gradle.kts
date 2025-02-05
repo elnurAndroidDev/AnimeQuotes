@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
@@ -59,11 +60,14 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
+    //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
-    // See Add the KSP plugin to your project
+    implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
+
+    //Paging3
+    implementation(libs.androidx.paging.runtime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

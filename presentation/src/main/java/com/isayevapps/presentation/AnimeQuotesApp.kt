@@ -58,9 +58,9 @@ fun AnimeQuotesApp(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable(Screen.AnimeTitleScreen.route) {
-                    val homeViewModel = hiltViewModel<AnimeTitlesViewModel>()
+                    val animeTitlesViewModel = hiltViewModel<AnimeTitlesViewModel>()
                     AnimeTitlesScreen(
-                        homeViewModel.uiState,
+                        animeTitlesViewModel,
                         navController,
                         modifier = Modifier.fillMaxSize()
                     )

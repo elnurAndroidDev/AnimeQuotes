@@ -1,4 +1,4 @@
-package com.isaevapps.data.local
+package com.isaevapps.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

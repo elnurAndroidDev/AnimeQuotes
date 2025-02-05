@@ -1,10 +1,12 @@
 package com.isaevapps.data
 
 import com.isaevapps.data.cloud.AnimeInfo
-import com.isaevapps.data.local.AnimeEntity
+import com.isaevapps.data.local.entities.AnimeEntity
+import com.isaevapps.data.local.entities.RemoteKeysEntity
 import com.isayevapps.domain.AnimeItem
+import com.isayevapps.domain.local.RemoteKeys
 
-fun AnimeInfo.toAnimeItem(): AnimeItem {
+fun AnimeInfo.toDomain(): AnimeItem {
     return AnimeItem(
         animeId = this.animeId,
         title = this.titleEng ?: this.title,
@@ -34,7 +36,7 @@ fun AnimeItem.toAnimeEntity(): AnimeEntity {
     )
 }
 
-fun AnimeEntity.toAnimeItem(): AnimeItem {
+fun AnimeEntity.toDomain(): AnimeItem {
     return AnimeItem(
         animeId = this.animeId,
         title = this.title,
@@ -46,5 +48,19 @@ fun AnimeEntity.toAnimeItem(): AnimeItem {
         airedFrom = this.airedFrom,
         airedTo = this.airedTo,
         genres = this.genres
+    )
+}
+
+fun RemoteKeysEntity.toDomain(): RemoteKeys {
+    return RemoteKeys(
+        prevKey = this.prevKey,
+        nextKey = this.nextKey
+    )
+}
+
+fun RemoteKeys.toEntity(): RemoteKeysEntity {
+    return RemoteKeysEntity(
+        prevKey = this.prevKey,
+        nextKey = this.nextKey
     )
 }

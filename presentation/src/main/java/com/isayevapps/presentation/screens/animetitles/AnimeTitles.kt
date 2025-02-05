@@ -20,19 +20,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.Screen
 
 @Composable
 fun AnimeTitlesScreen(
-    uiState: AnimeTitlesScreenUiState,
+    viewModel: AnimeTitlesViewModel,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    when (uiState) {
-        is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)
-        is AnimeTitlesScreenUiState.Success -> TitlesGrid(
-            titles = uiState.titles,
+
+    val animePaging = viewModel.animeTitles.collectAsLazyPagingItems()
+    TitlesGrid(
+            animeList = animePaging,
             onTitleClick = { title ->
                 navController.navigate(
                     Screen.AnimeDetail.createRoute(title)
@@ -40,9 +42,22 @@ fun AnimeTitlesScreen(
             },
             modifier = modifier
         )
-
-        is AnimeTitlesScreenUiState.Error -> ErrorScreen(modifier = modifier)
-    }
+//    val uiState = viewModel.uiState
+//
+//    when (uiState) {
+//        is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)
+//        is AnimeTitlesScreenUiState.Success -> TitlesGrid(
+//            titles = uiState.titles,
+//            onTitleClick = { title ->
+//                navController.navigate(
+//                    Screen.AnimeDetail.createRoute(title)
+//                )
+//            },
+//            modifier = modifier
+//        )
+//
+//        is AnimeTitlesScreenUiState.Error -> ErrorScreen(modifier = modifier)
+//    }
 }
 
 @Composable
@@ -68,7 +83,7 @@ fun LoadingScreen(modifier: Modifier) {
 
 @Composable
 fun TitlesGrid(
-    titles: List<AnimeItem> = listOf(),
+    animeList: LazyPagingItems<AnimeItem>,
     onTitleClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -77,7 +92,8 @@ fun TitlesGrid(
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
-        items(titles) { anime ->
+        items(animeList.itemCount) { index ->
+            val anime = animeList[index]!!
             TitleItem(
                 title = anime.title,
                 imgUrl = anime.imgUrl,
@@ -95,5 +111,5 @@ fun TitlesGrid(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun TitleGridPreview() {
-    TitlesGrid()
+    //TitlesGrid()
 }
