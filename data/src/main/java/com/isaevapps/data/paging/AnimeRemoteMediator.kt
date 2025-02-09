@@ -24,7 +24,6 @@ class AnimeRemoteMediator @Inject constructor(
         loadType: LoadType,
         state: PagingState<Int, AnimeEntity>
     ): MediatorResult {
-
         val currentPage: Int = when (loadType) {
             LoadType.REFRESH -> 1
             LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
@@ -32,9 +31,11 @@ class AnimeRemoteMediator @Inject constructor(
                 ?: return MediatorResult.Success(endOfPaginationReached = true)
         }
 
-        when (val result = animeCloudDataSource.getAnime(currentPage)) {
+        Log.d("XXX", "MovieRemoteMediator: load() called with: loadType = $loadType, page: $currentPage, loadSize=${state.config.initialLoadSize}")
+
+        when (val result = animeCloudDataSource.getAnime(currentPage, state.config.pageSize)) {
             is Resource.Success -> {
-                Log.d("XXX", "RemoteMediator: get animes from remote $loadType")
+                Log.d("XXX", "success loaded ${result.data.size}")
 
                 val anime = result.data
                 val endOfPaginationReached = anime.isEmpty()
@@ -57,6 +58,7 @@ class AnimeRemoteMediator @Inject constructor(
             }
 
             is Resource.Error -> {
+                Log.d("XXX", " error RemoteMediator: get animes from remote ${result.error}")
                 return MediatorResult.Error(result.error)
             }
         }

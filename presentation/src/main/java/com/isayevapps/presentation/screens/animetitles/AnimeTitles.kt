@@ -1,5 +1,6 @@
 package com.isayevapps.presentation.screens.animetitles
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,11 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,17 +37,27 @@ fun AnimeTitlesScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-
+    val isNetworkAvailable by viewModel.isNetworkAvailableFlow.collectAsState(initial = false)
     val animePaging = viewModel.animeTitles.collectAsLazyPagingItems()
+    val lazyGridState = rememberLazyGridState()
+
     TitlesGrid(
-            animeList = animePaging,
-            onTitleClick = { title ->
-                navController.navigate(
-                    Screen.AnimeDetail.createRoute(title)
-                )
-            },
-            modifier = modifier
-        )
+        animeList = animePaging,
+        lazyGridState = lazyGridState,
+        onTitleClick = { title ->
+            navController.navigate(
+                Screen.AnimeDetail.createRoute(title)
+            )
+        },
+        modifier = modifier
+    )
+
+//    LaunchedEffect(isNetworkAvailable) {
+//        if (isNetworkAvailable) {
+//            Log.d("XXX", "AnimeTitlesScreen: network available")
+//            animePaging.retry()
+//        }
+//    }
 //    val uiState = viewModel.uiState
 //
 //    when (uiState) {
@@ -84,15 +100,17 @@ fun LoadingScreen(modifier: Modifier) {
 @Composable
 fun TitlesGrid(
     animeList: LazyPagingItems<AnimeItem>,
+    lazyGridState: LazyGridState,
     onTitleClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
-        items(animeList.itemCount) { index ->
+        items(animeList.itemCount, key = { index -> animeList[index]!!.animeId}) { index ->
             val anime = animeList[index]!!
             TitleItem(
                 title = anime.title,

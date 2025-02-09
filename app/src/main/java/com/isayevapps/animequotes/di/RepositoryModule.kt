@@ -3,9 +3,11 @@ package com.isayevapps.animequotes.di
 import com.isaevapps.data.cloud.AnimeCloudDataSourceImpl
 import com.isaevapps.data.local.AnimeLocalDataSourceImpl
 import com.isaevapps.data.repository.RepositoryImpl
+import com.isaevapps.data.utils.NetworkConnectivityObserver
 import com.isayevapps.domain.cloud.AnimeCloudDataSource
 import com.isayevapps.domain.local.AnimeLocalDataSource
 import com.isayevapps.domain.repository.Repository
+import com.isayevapps.domain.utils.NetworkMonitor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,6 +25,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRepository(repositoryImpl: RepositoryImpl): Repository
+
+    @Binds
+    abstract fun bindNetworkMonitor(networkConnectivityObserver: NetworkConnectivityObserver): NetworkMonitor
 
 
 }

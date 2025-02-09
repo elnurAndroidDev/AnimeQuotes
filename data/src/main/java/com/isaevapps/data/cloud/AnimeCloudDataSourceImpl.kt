@@ -12,9 +12,9 @@ class AnimeCloudDataSourceImpl @Inject constructor(
     private val apiService: AnimeService
 ) : AnimeCloudDataSource {
 
-    override suspend fun getAnime(page: Int): Resource<List<AnimeItem>> {
+    override suspend fun getAnime(page: Int, pageSize: Int): Resource<List<AnimeItem>> {
         return try {
-            val animeResponse = apiService.getAnime(page)
+            val animeResponse = apiService.getAnime(page, pageSize)
             val anime = animeResponse.data.map { it.toDomain() }
             Resource.Success(anime)
         } catch (e: Exception) {

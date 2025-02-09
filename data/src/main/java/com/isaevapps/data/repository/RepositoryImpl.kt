@@ -24,6 +24,8 @@ class RepositoryImpl @Inject constructor(
     override fun getAnime(): Flow<PagingData<AnimeItem>> = Pager(
         config = PagingConfig(
             pageSize = 25,
+            initialLoadSize = 25,
+            prefetchDistance = 1,
             enablePlaceholders = false
         ),
         remoteMediator = animeRemoteMediator,

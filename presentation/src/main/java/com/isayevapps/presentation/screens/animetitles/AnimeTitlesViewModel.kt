@@ -10,14 +10,21 @@ import androidx.paging.cachedIn
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.usecase.GetAnimeUseCase
+import com.isayevapps.domain.utils.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AnimeTitlesViewModel @Inject constructor(
-    getAnimeUseCase: GetAnimeUseCase
+    getAnimeUseCase: GetAnimeUseCase,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     var uiState by mutableStateOf<AnimeTitlesScreenUiState>(AnimeTitlesScreenUiState.Loading)
@@ -25,9 +32,7 @@ class AnimeTitlesViewModel @Inject constructor(
 
     val animeTitles: Flow<PagingData<AnimeItem>> = getAnimeUseCase().cachedIn(viewModelScope)
 
-//    init {
-//        load()
-//    }
+    val isNetworkAvailableFlow = networkMonitor.observe()
 
 //    fun load() {
 //        viewModelScope.launch {
