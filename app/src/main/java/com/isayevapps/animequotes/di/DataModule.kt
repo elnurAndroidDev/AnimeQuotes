@@ -4,9 +4,9 @@ import android.content.Context
 import com.isaevapps.data.cloud.AnimeService
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
-import com.isaevapps.data.local.dao.RemoteKeysDao
 import com.isayevapps.domain.repository.Repository
 import com.isayevapps.domain.usecase.GetAnimeUseCase
+import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,14 +45,14 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideRemoteKeysDao(database: AnimeDataBase): RemoteKeysDao {
-        return database.remoteKeysDao()
+    fun provideGetAnimeTitlesUseCase(repository: Repository): GetAnimeUseCase {
+        return GetAnimeUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideGetAnimeTitlesUseCase(repository: Repository): GetAnimeUseCase {
-        return GetAnimeUseCase(repository)
+    fun provideLoadAnimeUseCase(repository: Repository): LoadAnimeUseCase {
+        return LoadAnimeUseCase(repository)
     }
 
 }

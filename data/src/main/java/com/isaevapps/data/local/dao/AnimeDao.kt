@@ -1,6 +1,5 @@
 package com.isaevapps.data.local.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,7 +13,7 @@ interface AnimeDao {
     suspend fun insertAll(animeList: List<AnimeEntity>)
 
     @Query("SELECT * FROM anime_titles")
-    fun getAllAnime(): PagingSource<Int,AnimeEntity>
+    fun getAllAnime(): Flow<List<AnimeEntity>>
 
     @Query("SELECT * FROM anime_titles WHERE animeId = :animeId")
     fun getAnimeById(animeId: Int): Flow<AnimeEntity?>

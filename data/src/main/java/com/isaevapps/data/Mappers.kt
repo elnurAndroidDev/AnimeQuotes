@@ -2,7 +2,6 @@ package com.isaevapps.data
 
 import com.isaevapps.data.cloud.AnimeInfo
 import com.isaevapps.data.local.entities.AnimeEntity
-import com.isaevapps.data.local.entities.RemoteKeysEntity
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.local.RemoteKeys
 
@@ -48,19 +47,5 @@ fun AnimeEntity.toDomain(): AnimeItem {
         airedFrom = this.airedFrom,
         airedTo = this.airedTo,
         genres = this.genres
-    )
-}
-
-fun RemoteKeysEntity.toDomain(): RemoteKeys {
-    return RemoteKeys(
-        prevKey = this.prevKey,
-        nextKey = this.nextKey
-    )
-}
-
-fun RemoteKeys.toEntity(): RemoteKeysEntity {
-    return RemoteKeysEntity(
-        prevKey = this.prevKey,
-        nextKey = this.nextKey
     )
 }

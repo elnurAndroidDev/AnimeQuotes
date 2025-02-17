@@ -1,36 +1,43 @@
 package com.isaevapps.data.repository
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
-import com.isaevapps.data.paging.AnimeRemoteMediator
-import com.isaevapps.data.toDomain
-import com.isayevapps.domain.AnimeItem
-import com.isayevapps.domain.repository.Repository
+import android.util.Log
+import com.isayevapps.domain.cloud.AnimeCloudDataSource
+import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.local.AnimeLocalDataSource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.isayevapps.domain.repository.LoadResult
+import com.isayevapps.domain.repository.LoadType
+import com.isayevapps.domain.repository.Repository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RepositoryImpl @Inject constructor(
     private val animeLocalDataSource: AnimeLocalDataSource,
-    private val animeRemoteMediator: AnimeRemoteMediator,
-): Repository {
-    @OptIn(ExperimentalPagingApi::class)
-    override fun getAnime(): Flow<PagingData<AnimeItem>> = Pager(
-        config = PagingConfig(
-            pageSize = 25,
-            initialLoadSize = 25,
-            prefetchDistance = 1,
-            enablePlaceholders = false
-        ),
-        remoteMediator = animeRemoteMediator,
-        pagingSourceFactory = { animeLocalDataSource.getAllAnime() }
-    ).flow.map { pagingData ->
-        pagingData.map { it.toDomain() }
+    private val animeCloudDataSource: AnimeCloudDataSource
+) : Repository {
+
+    private val pageSize = 25
+    private var currentPage = 1
+
+    override suspend fun loadItems(loadType: LoadType): LoadResult {
+        Log.d("XXX", "loadItems: $loadType, $currentPage")
+        if (loadType == LoadType.Refresh) {
+            animeLocalDataSource.clearAll()
+            currentPage = 1
+        }
+        when (val result = animeCloudDataSource.getAnime(currentPage, pageSize)) {
+            is Resource.Success -> {
+                animeLocalDataSource.insertAll(result.data)
+                currentPage++
+            }
+
+            is Resource.Error -> {
+                return LoadResult.Error(result.error)
+            }
+        }
+
+        return LoadResult.Success
     }
+
+    override fun getAllAnime() = animeLocalDataSource.getAllAnime()
 }
