@@ -1,6 +1,5 @@
 package com.isayevapps.presentation.screens.animetitles
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -28,17 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
-import com.isayevapps.presentation.Screen
 
 @Composable
 fun AnimeTitlesScreen(
     viewModel: AnimeTitlesViewModel,
-    navController: NavController,
+    onTitleClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isNetworkAvailable by viewModel.isNetworkAvailableFlow.collectAsState(initial = false)
@@ -53,11 +46,7 @@ fun AnimeTitlesScreen(
         loadMore = {
             viewModel.loadAnime(LoadType.Append)
         },
-        onTitleClick = { title ->
-            navController.navigate(
-                Screen.AnimeDetail.createRoute(title)
-            )
-        },
+        onTitleClick = onTitleClick,
         modifier = modifier
     )
 
@@ -110,13 +99,14 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 fun TitlesGrid(
     animeList: List<AnimeItem>,
     loadMore: () -> Unit = {},
-    onTitleClick: (String) -> Unit = {},
+    onTitleClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val lazyGridState = rememberLazyGridState()
     val shouldLoadMore by remember {
         derivedStateOf {
-            val lastVisibleItemIndex = lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val lastVisibleItemIndex =
+                lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             val totalItemsCount = lazyGridState.layoutInfo.totalItemsCount
             totalItemsCount > 0 && lastVisibleItemIndex >= totalItemsCount - 1
         }
@@ -142,7 +132,7 @@ fun TitlesGrid(
                     .fillMaxWidth()
                     .padding(4.dp)
                     .clickable {
-                        onTitleClick(anime.title)
+                        onTitleClick(anime.animeId)
                     }
             )
         }

@@ -21,23 +21,32 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.isayevapps.presentation.screens.animedetails.AnimeDetailViewModel
 import com.isayevapps.presentation.screens.animedetails.AnimeDetailsScreen
 import com.isayevapps.presentation.screens.animetitles.AnimeTitlesScreen
 import com.isayevapps.presentation.screens.animetitles.AnimeTitlesViewModel
+import kotlinx.serialization.Serializable
 
 
-enum class Screen(val route: String) {
-    AnimeTitleScreen("anim_title"),
-    AnimeDetail("anime_detail/{title}");
+//enum class Screen(val route: String) {
+//    AnimeTitleScreen("anime_title"),
+//    AnimeDetail("anime_detail/{id}");
+//
+//    fun createRoute(vararg args: Any): String {
+//        var formattedRoute = route
+//        args.forEach { arg ->
+//            formattedRoute = formattedRoute.replaceFirst(Regex("\\{.*?\\}"), arg.toString())
+//        }
+//        return formattedRoute
+//    }
+//}
 
-    fun createRoute(vararg args: Any): String {
-        var formattedRoute = route
-        args.forEach { arg ->
-            formattedRoute = formattedRoute.replaceFirst(Regex("\\{.*?\\}"), arg.toString())
-        }
-        return formattedRoute
-    }
-}
+@Serializable
+object AnimeTitles
+
+@Serializable
+data class AnimeDetail(val animeId: Int)
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,23 +63,24 @@ fun AnimeQuotesApp(modifier: Modifier = Modifier) {
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.AnimeTitleScreen.route,
+                startDestination = AnimeTitles,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(Screen.AnimeTitleScreen.route) {
+                composable<AnimeTitles> {
                     val animeTitlesViewModel = hiltViewModel<AnimeTitlesViewModel>()
                     AnimeTitlesScreen(
-                        animeTitlesViewModel,
-                        navController,
+                        viewModel = animeTitlesViewModel,
+                        onTitleClick = { animeId -> navController.navigate(AnimeDetail(animeId)) },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-                composable(
-                    route = Screen.AnimeDetail.route,
-                    arguments = listOf(navArgument("title") { type = NavType.StringType })
-                ) { backStackEntry ->
-                    val title = backStackEntry.arguments?.getString("title") ?: ""
-                    AnimeDetailsScreen(title)
+                composable<AnimeDetail> { backStackEntry ->
+                    val animeDetail: AnimeDetail = backStackEntry.toRoute()
+                    val animeDetailViewModel = hiltViewModel<AnimeDetailViewModel>()
+                    AnimeDetailsScreen(
+                        animeId = animeDetail.animeId,
+                        viewModel = animeDetailViewModel
+                    )
                 }
             }
         }

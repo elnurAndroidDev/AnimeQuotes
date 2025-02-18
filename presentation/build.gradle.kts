@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+    kotlin("plugin.serialization")
     id("com.google.dagger.hilt.android")
 }
 
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     //Coil
     implementation(libs.coil.compose)

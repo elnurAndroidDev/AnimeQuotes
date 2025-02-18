@@ -26,7 +26,7 @@ class AnimeLocalDataSourceImpl @Inject constructor(
             .map { animeEntities -> animeEntities.map { it.toDomain() } }
     }
 
-    override fun getAnimeById(animeId: Int): Flow<AnimeItem?> {
+    override fun getAnimeDetails(animeId: Int): Flow<AnimeItem?> {
         return animeDao.getAnimeById(animeId).map { it?.toDomain() }
     }
 

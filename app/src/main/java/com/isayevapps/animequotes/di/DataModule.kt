@@ -5,7 +5,8 @@ import com.isaevapps.data.cloud.AnimeService
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
 import com.isayevapps.domain.repository.Repository
-import com.isayevapps.domain.usecase.GetAnimeUseCase
+import com.isayevapps.domain.usecase.GetAllAnimeUseCase
+import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import dagger.Module
 import dagger.Provides
@@ -45,8 +46,14 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideGetAnimeTitlesUseCase(repository: Repository): GetAnimeUseCase {
-        return GetAnimeUseCase(repository)
+    fun provideGetAllAnimeTitlesUseCase(repository: Repository): GetAllAnimeUseCase {
+        return GetAllAnimeUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAnimeDetailsUseCase(repository: Repository): GetAnimeDetailsUseCase {
+        return GetAnimeDetailsUseCase(repository)
     }
 
     @Provides

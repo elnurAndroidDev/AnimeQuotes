@@ -1,14 +1,10 @@
 package com.isayevapps.presentation.screens.animetitles
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadResult
 import com.isayevapps.domain.repository.LoadType
-import com.isayevapps.domain.usecase.GetAnimeUseCase
+import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.utils.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeTitlesViewModel @Inject constructor(
-    private val getAnimeUseCase: GetAnimeUseCase,
+    private val getAllAnimeUseCase: GetAllAnimeUseCase,
     private val loadAnimeUseCase: LoadAnimeUseCase,
     private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
@@ -36,7 +32,7 @@ class AnimeTitlesViewModel @Inject constructor(
 
     private fun observeAnime() {
         viewModelScope.launch {
-            getAnimeUseCase().collect { animeList ->
+            getAllAnimeUseCase().collect { animeList ->
                 _uiState.value = _uiState.value.copy(animeList = animeList)
             }
         }
