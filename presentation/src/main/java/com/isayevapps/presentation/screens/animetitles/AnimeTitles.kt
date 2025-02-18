@@ -123,7 +123,6 @@ fun TitlesGrid(
     }
 
     LaunchedEffect(shouldLoadMore) {
-        Log.d("XXX", "TitlesGrid: $shouldLoadMore")
         if (shouldLoadMore) {
             loadMore()
         }

@@ -1,9 +1,10 @@
 package com.isaevapps.data.local.entities
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "anime_titles")
+@Entity(tableName = "anime_titles", indices = [Index(value = ["animeId"], unique = true)])
 data class AnimeEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
