@@ -12,3 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 val InfoBoxColor = Color(0xFF262630)
 val Stroke = Color(0xFF4B4B4B)
+
+val BackgroundDark = Color(0xFF3C3C42)
+val BackgroundLight = Color(0xFFE3D6CA)

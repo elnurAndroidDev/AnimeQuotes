@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -126,7 +127,7 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
         Text(
             text = anime.title,
             fontSize = 24.sp,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)
         )
@@ -134,13 +135,13 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
         Text(
             text = "Synopsis",
             fontSize = 18.sp,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
         )
         Text(
             text = anime.synopsis,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()

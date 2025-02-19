@@ -38,7 +38,7 @@ fun AnimeTitlesScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     if (uiState.animeList.isEmpty() && uiState.isLoading) {
-        LoadingScreen()
+        LoadingScreen(modifier)
     }
 
     TitlesGrid(
@@ -82,9 +82,7 @@ fun ErrorScreen(modifier: Modifier) {
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
@@ -121,7 +119,7 @@ fun TitlesGrid(
     LazyVerticalGrid(
         state = lazyGridState,
         columns = GridCells.Adaptive(150.dp),
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         contentPadding = PaddingValues(4.dp)
     ) {
         items(animeList, key = { anime -> anime.animeId }) { anime ->
