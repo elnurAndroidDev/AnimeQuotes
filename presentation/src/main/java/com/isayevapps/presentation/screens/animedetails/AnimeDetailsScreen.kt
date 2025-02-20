@@ -1,6 +1,9 @@
 package com.isayevapps.presentation.screens.animedetails
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -52,10 +55,13 @@ import com.isayevapps.presentation.theme.InfoBoxColor
 import com.isayevapps.presentation.theme.Stroke
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AnimeDetailsScreen(
     animeId: Int,
     viewModel: AnimeDetailViewModel,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
 
@@ -68,12 +74,22 @@ fun AnimeDetailsScreen(
     when {
         state.isLoading -> {}//LoadingScreen()
         state.error != null -> {}//ErrorScreen(state.error, onRetry = { viewModel.processIntent(DetailIntent.Retry) })
-        state.animeItem != null -> AnimeDetailsContent(state.animeItem!!)
+        state.animeItem != null -> AnimeDetailsContent(
+            state.animeItem!!,
+            sharedTransitionScope,
+            animatedVisibilityScope
+        )
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
+fun AnimeDetailsContent(
+    anime: AnimeItem,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -87,23 +103,29 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
                 .height(330.dp)
         ) {
             val (img, info) = createRefs()
-            AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(anime.imgUrl)
-                    .crossfade(true)
-                    .placeholder(R.drawable.placeholder_img)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .aspectRatio(0.7f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .constrainAs(img) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        bottom.linkTo(parent.bottom)
-                    }
-            )
+            with(sharedTransitionScope) {
+                AsyncImage(
+                    model = ImageRequest.Builder(context = LocalContext.current)
+                        .data(anime.imgUrl)
+                        .crossfade(true)
+                        .placeholder(R.drawable.placeholder_img)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .sharedElement(
+                            state = sharedTransitionScope.rememberSharedContentState(key = anime.animeId),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
+                        .aspectRatio(0.7f)
+                        .clip(RoundedCornerShape(16.dp))
+                        .constrainAs(img) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -157,16 +179,4 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
 )
 @Composable
 private fun AnimeDetailsScreenPreview() {
-    AnimeDetailsContent(anime = AnimeItem(
-        animeId = 1,
-        title = "Hello",
-        type = "TV",
-        score = 3.0,
-        genres = listOf("Action"),
-        imgUrl = "asfasf",
-        episodes = 2,
-        synopsis = "asfasf",
-        airedFrom = "kjkj",
-        airedTo = "hghg"
-    ))
 }

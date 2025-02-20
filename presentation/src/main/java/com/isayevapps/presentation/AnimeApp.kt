@@ -1,6 +1,7 @@
 package com.isayevapps.presentation
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -13,7 +14,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,9 +34,9 @@ object AnimeTitles
 data class AnimeDetail(val animeId: Int)
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeQuotesApp(modifier: Modifier = Modifier) {
+fun AnimeApp(modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val navController = rememberNavController()
     Scaffold(
@@ -47,26 +47,31 @@ fun AnimeQuotesApp(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = AnimeTitles,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable<AnimeTitles> {
-                    val animeTitlesViewModel = hiltViewModel<AnimeTitlesViewModel>()
-                    AnimeTitlesScreen(
-                        viewModel = animeTitlesViewModel,
-                        onTitleClick = { animeId -> navController.navigate(AnimeDetail(animeId)) },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-                composable<AnimeDetail> { backStackEntry ->
-                    val animeDetail: AnimeDetail = backStackEntry.toRoute()
-                    val animeDetailViewModel = hiltViewModel<AnimeDetailViewModel>()
-                    AnimeDetailsScreen(
-                        animeId = animeDetail.animeId,
-                        viewModel = animeDetailViewModel
-                    )
+            SharedTransitionLayout(modifier = Modifier.padding(innerPadding)) {
+                NavHost(
+                    navController = navController,
+                    startDestination = AnimeTitles
+                ) {
+                    composable<AnimeTitles> {
+                        val animeTitlesViewModel = hiltViewModel<AnimeTitlesViewModel>()
+                        AnimeTitlesScreen(
+                            viewModel = animeTitlesViewModel,
+                            onTitleClick = { animeId -> navController.navigate(AnimeDetail(animeId)) },
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            animatedVisibilityScope = this@composable,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    composable<AnimeDetail> { backStackEntry ->
+                        val animeDetail: AnimeDetail = backStackEntry.toRoute()
+                        val animeDetailViewModel = hiltViewModel<AnimeDetailViewModel>()
+                        AnimeDetailsScreen(
+                            animeId = animeDetail.animeId,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            animatedVisibilityScope = this@composable,
+                            viewModel = animeDetailViewModel
+                        )
+                    }
                 }
             }
         }

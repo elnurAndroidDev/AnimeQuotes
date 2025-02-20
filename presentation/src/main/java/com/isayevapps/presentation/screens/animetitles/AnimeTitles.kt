@@ -1,5 +1,8 @@
 package com.isayevapps.presentation.screens.animetitles
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,10 +31,13 @@ import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AnimeTitlesScreen(
     viewModel: AnimeTitlesViewModel,
     onTitleClick: (Int) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     val isNetworkAvailable by viewModel.isNetworkAvailableFlow.collectAsState(initial = false)
@@ -47,6 +53,8 @@ fun AnimeTitlesScreen(
             viewModel.loadAnime(LoadType.Append)
         },
         onTitleClick = onTitleClick,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier
     )
 
@@ -93,11 +101,14 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TitlesGrid(
     animeList: List<AnimeItem>,
     loadMore: () -> Unit = {},
     onTitleClick: (Int) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
     val lazyGridState = rememberLazyGridState()
@@ -124,8 +135,11 @@ fun TitlesGrid(
     ) {
         items(animeList, key = { anime -> anime.animeId }) { anime ->
             TitleItem(
+                animeId = anime.animeId,
                 title = anime.title,
                 imgUrl = anime.imgUrl,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp)

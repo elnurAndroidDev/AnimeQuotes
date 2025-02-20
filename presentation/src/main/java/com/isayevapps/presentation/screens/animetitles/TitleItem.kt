@@ -1,5 +1,9 @@
 package com.isayevapps.presentation.screens.animetitles
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,37 +32,52 @@ import coil3.request.crossfade
 import coil3.request.placeholder
 import com.isayevapps.presentation.R
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TitleItem(title: String, imgUrl: String, modifier: Modifier = Modifier) {
+fun TitleItem(
+    animeId: Int,
+    title: String,
+    imgUrl: String,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = modifier.clip(RoundedCornerShape(16.dp))
+        modifier = modifier
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(imgUrl)
-                .crossfade(true)
-                .placeholder(R.drawable.placeholder_img)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.6f)
-                .drawWithContent {
-                    drawContent()
-                    drawRect(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.2f),
-                                Color.Black
-                            )
-                        ),
-                        topLeft = Offset.Zero,
-                        size = Size(size.width, size.height)
+        with(sharedTransitionScope) {
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(imgUrl)
+                    .crossfade(true)
+                    .placeholder(R.drawable.placeholder_img)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .sharedElement(
+                        state = sharedTransitionScope.rememberSharedContentState(key = animeId),
+                        animatedVisibilityScope = animatedVisibilityScope
                     )
-                }
-        )
+                    .fillMaxWidth()
+                    .aspectRatio(0.6f)
+                    .clip(RoundedCornerShape(16.dp))
+                    .drawWithContent {
+                        drawContent()
+                        drawRect(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = 0.2f),
+                                    Color.Black
+                                )
+                            ),
+                            topLeft = Offset.Zero,
+                            size = Size(size.width, size.height)
+                        )
+                    }
+            )
+        }
         Text(
             text = title,
             fontSize = 14.sp,
@@ -75,5 +94,5 @@ fun TitleItem(title: String, imgUrl: String, modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun TitlePreview() {
-    TitleItem(imgUrl = "img", title = "title", modifier = Modifier.width(200.dp))
+    //TitleItem(imgUrl = "img", title = "title", modifier = Modifier.width(200.dp))
 }
