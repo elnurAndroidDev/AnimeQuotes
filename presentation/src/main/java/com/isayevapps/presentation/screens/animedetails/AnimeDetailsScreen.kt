@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -78,13 +79,12 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
         modifier = modifier
             .verticalScroll(scrollState)
             .fillMaxSize()
-            .padding(vertical = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(330.dp)
-                .padding(horizontal = 20.dp)
         ) {
             val (img, info) = createRefs()
             AsyncImage(
@@ -100,6 +100,7 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
                     .clip(RoundedCornerShape(16.dp))
                     .constrainAs(img) {
                         top.linkTo(parent.top)
+                        start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     }
             )
@@ -109,7 +110,6 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
                     .constrainAs(info) {
                         top.linkTo(img.top)
                         bottom.linkTo(img.bottom)
-                        start.linkTo(img.end)
                         end.linkTo(parent.end)
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -129,15 +129,15 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         )
-        Divider(modifier = Modifier.padding(horizontal = 20.dp), color = Stroke)
+        Divider(color = Stroke)
         Text(
             text = "Synopsis",
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         )
         Text(
             text = anime.synopsis,
@@ -145,17 +145,28 @@ fun AnimeDetailsContent(anime: AnimeItem, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
         )
     }
 }
 
 
 @Preview(
-    showSystemUi = true, showBackground = true,
+    showSystemUi = true, showBackground = false,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    backgroundColor = 0xFF262630
+    backgroundColor = 0xFF262630, device = "spec:parent=pixel_5"
 )
 @Composable
 private fun AnimeDetailsScreenPreview() {
+    AnimeDetailsContent(anime = AnimeItem(
+        animeId = 1,
+        title = "Hello",
+        type = "TV",
+        score = 3.0,
+        genres = listOf("Action"),
+        imgUrl = "asfasf",
+        episodes = 2,
+        synopsis = "asfasf",
+        airedFrom = "kjkj",
+        airedTo = "hghg"
+    ))
 }
