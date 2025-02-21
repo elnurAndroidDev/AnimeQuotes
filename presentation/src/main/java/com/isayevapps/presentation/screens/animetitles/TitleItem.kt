@@ -77,16 +77,22 @@ fun TitleItem(
                         )
                     }
             )
+
+            Text(
+                text = title,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                modifier = Modifier
+                    .sharedBounds(
+                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "title $animeId"),
+                        //boundsTransform = {_,_ -> tween(3000)},
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 8.dp, vertical = 16.dp)
+            )
         }
-        Text(
-            text = title,
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 8.dp, vertical = 16.dp)
-        )
     }
 }
 

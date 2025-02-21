@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -97,13 +98,13 @@ fun AnimeDetailsContent(
             .fillMaxSize()
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(330.dp)
-        ) {
-            val (img, info) = createRefs()
-            with(sharedTransitionScope) {
+        with(sharedTransitionScope) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(330.dp)
+            ) {
+                val (img, info) = createRefs()
                 AsyncImage(
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .data(anime.imgUrl)
@@ -125,34 +126,44 @@ fun AnimeDetailsContent(
                             bottom.linkTo(parent.bottom)
                         }
                 )
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .constrainAs(info) {
+                            top.linkTo(img.top)
+                            bottom.linkTo(img.bottom)
+                            end.linkTo(parent.end)
+                        },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    InfoBox(ico = R.drawable.genre_ico, type = "Type", text = anime.type)
+                    InfoBox(
+                        ico = R.drawable.episodes_ico,
+                        type = "Episodes",
+                        text = anime.episodes.toString()
+                    )
+                    InfoBox(
+                        ico = R.drawable.rating_ico,
+                        type = "Rating",
+                        text = "${anime.score}/10"
+                    )
+                }
             }
-            Column(
+            Text(
+                text = anime.title,
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .constrainAs(info) {
-                        top.linkTo(img.top)
-                        bottom.linkTo(img.bottom)
-                        end.linkTo(parent.end)
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                InfoBox(ico = R.drawable.genre_ico, type = "Type", text = anime.type)
-                InfoBox(
-                    ico = R.drawable.episodes_ico,
-                    type = "Episodes",
-                    text = anime.episodes.toString()
-                )
-                InfoBox(ico = R.drawable.rating_ico, type = "Rating", text = "${anime.score}/10")
-            }
+                    .sharedBounds(
+                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "title ${anime.animeId}"),
+                        //boundsTransform = {_,_ -> tween(3000)},
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                    .padding(vertical = 16.dp)
+            )
         }
-        Text(
-            text = anime.title,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
         Divider(color = Stroke)
         Text(
             text = "Synopsis",
