@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.animedetails.components
+package com.isayevapps.presentation.screens.home.animedetails.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.isayevapps.presentation.R
 import com.isayevapps.presentation.theme.BackgroundLight
 import com.isayevapps.presentation.theme.InfoBoxColor
 import com.isayevapps.presentation.theme.Stroke
@@ -64,6 +65,6 @@ fun InfoBox(ico: Int, type: String = "", text: String = "", modifier: Modifier =
 @Composable
 private fun InfoBoxPreview() {
 
-    InfoBox(ico = com.isayevapps.presentation.R.drawable.genre_ico, type = "Type", text = "TV Special")
+    InfoBox(ico = R.drawable.genre_ico, type = "Type", text = "TV Special")
 
 }

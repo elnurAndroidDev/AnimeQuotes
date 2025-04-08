@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.animedetails
+package com.isayevapps.presentation.screens.home.animedetails
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,7 +52,8 @@ import coil3.request.crossfade
 import coil3.request.placeholder
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.R
-import com.isayevapps.presentation.screens.animedetails.components.InfoBox
+import com.isayevapps.presentation.screens.home.animedetails.components.ToggleFavoriteButton
+import com.isayevapps.presentation.screens.home.animedetails.components.InfoBox
 import com.isayevapps.presentation.theme.InfoBoxColor
 import com.isayevapps.presentation.theme.Stroke
 
@@ -78,7 +80,9 @@ fun AnimeDetailsScreen(
         state.animeItem != null -> AnimeDetailsContent(
             state.animeItem!!,
             sharedTransitionScope,
-            animatedVisibilityScope
+            animatedVisibilityScope,
+            isFavorite = state.isFavorite,
+            onToggleFavorites = { viewModel.processIntent(DetailIntent.ToggleFavorite) },
         )
     }
 }
@@ -89,7 +93,9 @@ fun AnimeDetailsContent(
     anime: AnimeItem,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isFavorite: Boolean = false,
+    onToggleFavorites: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -164,13 +170,14 @@ fun AnimeDetailsContent(
                     .padding(vertical = 16.dp)
             )
         }
-        Divider(color = Stroke)
+        ToggleFavoriteButton(isFavorite = isFavorite, onClick = onToggleFavorites, modifier = Modifier.fillMaxWidth())
+        Divider(color = Stroke, modifier = Modifier.padding(vertical = 16.dp))
         Text(
             text = "Synopsis",
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
             text = anime.synopsis,

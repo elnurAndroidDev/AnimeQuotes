@@ -8,4 +8,9 @@ interface AnimeLocalDataSource {
     fun getAllAnime(): Flow<List<AnimeItem>>
     fun getAnimeDetails(animeId: Int): Flow<AnimeItem?>
     suspend fun clearAll()
+
+    suspend fun addToFavorites(anime: AnimeItem)
+    suspend fun removeFromFavorites(animeId: Int)
+    fun getAllFavorite(): Flow<List<AnimeItem>>
+    suspend fun isFavorite(animeId: Int): Boolean
 }

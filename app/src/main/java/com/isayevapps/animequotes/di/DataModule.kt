@@ -4,10 +4,15 @@ import android.content.Context
 import com.isaevapps.data.cloud.AnimeService
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
+import com.isaevapps.data.local.dao.FavoriteDao
+import com.isayevapps.domain.repository.FavoritesRepository
 import com.isayevapps.domain.repository.Repository
+import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
+import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
+import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,6 +51,12 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideFavoriteDao(database: AnimeDataBase): FavoriteDao {
+        return database.favoriteDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideGetAllAnimeTitlesUseCase(repository: Repository): GetAllAnimeUseCase {
         return GetAllAnimeUseCase(repository)
     }
@@ -61,5 +72,24 @@ object DataModule {
     fun provideLoadAnimeUseCase(repository: Repository): LoadAnimeUseCase {
         return LoadAnimeUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideAddToFavoriteUseCase(favoritesRepository: FavoritesRepository): AddToFavoritesUseCase {
+        return AddToFavoritesUseCase(favoritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIsFavoriteUseCase(favoritesRepository: FavoritesRepository): IsFavoriteUseCase {
+        return IsFavoriteUseCase(favoritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoveFromFavoritesUseCase(favoritesRepository: FavoritesRepository): RemoveFromFavoritesUseCase {
+        return RemoveFromFavoritesUseCase(favoritesRepository)
+    }
+
 
 }

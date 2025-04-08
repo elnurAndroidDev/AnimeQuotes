@@ -6,13 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.isaevapps.data.local.dao.AnimeDao
+import com.isaevapps.data.local.dao.FavoriteDao
 import com.isaevapps.data.local.entities.AnimeEntity
+import com.isaevapps.data.local.entities.FavoriteEntity
 
-@Database(entities = [AnimeEntity::class], version = 1, exportSchema = false)
+@Database(entities = [AnimeEntity::class, FavoriteEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AnimeDataBase: RoomDatabase() {
 
     abstract fun animeDao(): AnimeDao
+    abstract fun favoriteDao(): FavoriteDao
 
     companion object {
         @Volatile

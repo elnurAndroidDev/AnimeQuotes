@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.animetitles
+package com.isayevapps.presentation.screens.home.animetitles
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi

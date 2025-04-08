@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.animetitles
+package com.isayevapps.presentation.screens.home.animetitles
 
 import com.isayevapps.domain.AnimeItem
 

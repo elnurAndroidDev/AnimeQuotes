@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.animetitles
+package com.isayevapps.presentation.screens.home.animetitles
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

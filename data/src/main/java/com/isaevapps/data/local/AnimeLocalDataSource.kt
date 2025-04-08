@@ -1,8 +1,10 @@
 package com.isaevapps.data.local
 
 import com.isaevapps.data.local.dao.AnimeDao
+import com.isaevapps.data.local.dao.FavoriteDao
 import com.isaevapps.data.toAnimeEntity
 import com.isaevapps.data.toDomain
+import com.isaevapps.data.toFavoriteEntity
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.local.AnimeLocalDataSource
 import kotlinx.coroutines.flow.Flow
@@ -10,16 +12,31 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Suppress("UNCHECKED_CAST")
 @Singleton
 class AnimeLocalDataSourceImpl @Inject constructor(
     private val animeDao: AnimeDao,
+    private val favoriteDao: FavoriteDao
 ) : AnimeLocalDataSource {
 
     override suspend fun insertAll(animeList: List<AnimeItem>) {
         val animeEntities = animeList.map { it.toAnimeEntity() }
         animeDao.insertAll(animeEntities)
     }
+
+    override suspend fun addToFavorites(anime: AnimeItem) {
+        favoriteDao.insertFavorite(anime.toFavoriteEntity())
+    }
+
+    override suspend fun removeFromFavorites(animeId: Int) {
+        favoriteDao.deleteFavorite(animeId)
+    }
+
+    override fun getAllFavorite(): Flow<List<AnimeItem>> {
+        return favoriteDao.getAllFavorites()
+            .map { favoriteEntities -> favoriteEntities.map { it.toDomain() } }
+    }
+
+    override suspend fun isFavorite(animeId: Int) = favoriteDao.isFavorite(animeId)
 
     override fun getAllAnime(): Flow<List<AnimeItem>> {
         return animeDao.getAllAnime()
