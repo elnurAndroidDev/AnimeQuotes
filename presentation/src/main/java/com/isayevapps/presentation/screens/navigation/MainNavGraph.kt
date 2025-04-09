@@ -15,13 +15,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.isayevapps.presentation.screens.favorite.favoritesNavigation
 import com.isayevapps.presentation.screens.home.HomeNavGraph
 import com.isayevapps.presentation.screens.home.TopAnime
 import com.isayevapps.presentation.screens.home.homeNavigation
 import kotlinx.serialization.Serializable
-
-@Serializable
-object Favorite
 
 @Serializable
 object Search
@@ -36,9 +34,7 @@ fun MainNavHost(
     SharedTransitionLayout(modifier) {
         NavHost(navController, startDestination) {
             homeNavigation(navController, this@SharedTransitionLayout)
-            composable<Favorite> {
-                Text(text = "Favorites")
-            }
+            favoritesNavigation(navController, this@SharedTransitionLayout)
             composable<Search> {
                 Text(text = "Search")
             }

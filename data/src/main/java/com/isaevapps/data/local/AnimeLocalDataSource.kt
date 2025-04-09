@@ -38,6 +38,10 @@ class AnimeLocalDataSourceImpl @Inject constructor(
 
     override suspend fun isFavorite(animeId: Int) = favoriteDao.isFavorite(animeId)
 
+    override suspend fun getFavoriteAnimeDetails(animeId: Int): AnimeItem? {
+        return favoriteDao.getFavoriteAnimeDetails(animeId)?.toDomain()
+    }
+
     override fun getAllAnime(): Flow<List<AnimeItem>> {
         return animeDao.getAllAnime()
             .map { animeEntities -> animeEntities.map { it.toDomain() } }

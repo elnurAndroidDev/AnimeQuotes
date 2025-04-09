@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.home.animedetails.components
+package com.isayevapps.presentation.screens.common.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

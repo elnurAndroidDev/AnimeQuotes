@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.home.animedetails
+package com.isayevapps.presentation.screens.favorite.favoritedetails
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -15,16 +15,16 @@ import com.isayevapps.presentation.screens.common.AnimeDetailsContent
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeDetailsScreen(
+fun FavoriteDetailsScreen(
     animeId: Int,
-    viewModel: AnimeDetailViewModel,
+    viewModel: FavoriteDetailViewModel,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
 
     LaunchedEffect(Unit) {
-        viewModel.processIntent(DetailIntent.LoadAnimeDetails(animeId))
+        viewModel.processIntent(FavoriteDetailsIntent.LoadAnimeDetails(animeId))
     }
 
     val state by viewModel.state.collectAsState()
@@ -37,7 +37,7 @@ fun AnimeDetailsScreen(
             sharedTransitionScope,
             animatedVisibilityScope,
             isFavorite = state.isFavorite,
-            onToggleFavorites = { viewModel.processIntent(DetailIntent.ToggleFavorite) },
+            onToggleFavorites = { viewModel.processIntent(FavoriteDetailsIntent.ToggleFavorite) },
         )
     }
 }

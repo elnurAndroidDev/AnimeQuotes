@@ -20,4 +20,7 @@ interface FavoriteDao {
 
     @Query("DELETE FROM favorite_table WHERE animeId = :animeId")
     suspend fun deleteFavorite(animeId: Int)
+
+    @Query("SELECT * FROM favorite_table WHERE animeId = :animeId")
+    suspend fun getFavoriteAnimeDetails(animeId: Int): FavoriteEntity?
 }

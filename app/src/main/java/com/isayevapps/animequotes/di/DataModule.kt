@@ -10,6 +10,8 @@ import com.isayevapps.domain.repository.Repository
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
+import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
+import com.isayevapps.domain.usecase.GetFavoritesUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
@@ -89,6 +91,18 @@ object DataModule {
     @Singleton
     fun provideRemoveFromFavoritesUseCase(favoritesRepository: FavoritesRepository): RemoveFromFavoritesUseCase {
         return RemoveFromFavoritesUseCase(favoritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllFavoritesUseCase(favoritesRepository: FavoritesRepository): GetFavoritesUseCase {
+        return GetFavoritesUseCase(favoritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFavoriteDetailUseCase(favoritesRepository: FavoritesRepository): GetFavoriteDetailUseCase {
+        return GetFavoriteDetailUseCase(favoritesRepository)
     }
 
 

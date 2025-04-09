@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.home.animedetails.components
+package com.isayevapps.presentation.screens.common.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding

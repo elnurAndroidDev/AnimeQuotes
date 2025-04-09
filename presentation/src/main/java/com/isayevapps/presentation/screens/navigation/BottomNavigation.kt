@@ -33,6 +33,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.isayevapps.presentation.R
+import com.isayevapps.presentation.screens.favorite.FavoritesNavGraph
 import com.isayevapps.presentation.screens.home.HomeNavGraph
 
 data class BottomNavItem<T : Any>(
@@ -46,7 +47,7 @@ data class BottomNavItem<T : Any>(
             BottomNavItem(HomeNavGraph, Icons.Filled.Home, Icons.Outlined.Home, R.string.top_anime),
             BottomNavItem(Search, Icons.Filled.Search, Icons.Outlined.Search, R.string.search),
             BottomNavItem(
-                Favorite,
+                FavoritesNavGraph,
                 Icons.Filled.Favorite,
                 Icons.Outlined.Favorite,
                 R.string.favorites
@@ -63,7 +64,6 @@ fun BottomBar(
     onItemSelected: (Int) -> Unit
 ) {
     NavigationBar {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
         BottomNavItem.items().forEach { item ->
             val isSelected = selectedItemIndex == BottomNavItem.items().indexOf(item)
             NavigationBarItem(

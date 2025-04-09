@@ -23,4 +23,8 @@ class FavoritesRepositoryImpl @Inject constructor(private val animeLocalDataSour
     override fun getAllFavorite(): Flow<List<AnimeItem>> {
         return animeLocalDataSource.getAllFavorite()
     }
+
+    override suspend fun getFavoriteAnimeDetails(animeId: Int): AnimeItem? {
+        return animeLocalDataSource.getFavoriteAnimeDetails(animeId)
+    }
 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
+import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -127,28 +128,16 @@ fun TitlesGrid(
         }
     }
 
-    LazyVerticalGrid(
+    AnimeVerticalGrid(
         state = lazyGridState,
+        animeList = animeList,
+        onTitleClick = onTitleClick,
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier,
-        contentPadding = PaddingValues(4.dp)
-    ) {
-        items(animeList, key = { anime -> anime.animeId }) { anime ->
-            TitleItem(
-                animeId = anime.animeId,
-                title = anime.title,
-                imgUrl = anime.imgUrl,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-                    .clickable {
-                        onTitleClick(anime.animeId)
-                    }
-            )
-        }
-    }
+        contentPadding = PaddingValues(4.dp),
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope
+    )
 }
 
 @Preview(showSystemUi = true, showBackground = true)

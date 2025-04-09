@@ -8,4 +8,5 @@ interface FavoritesRepository {
     suspend fun removeFromFavorite(animeId: Int)
     suspend fun isFavorite(animeId: Int): Boolean
     fun getAllFavorite(): Flow<List<AnimeItem>>
+    suspend fun getFavoriteAnimeDetails(animeId: Int): AnimeItem?
 }
