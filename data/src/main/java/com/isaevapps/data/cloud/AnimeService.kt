@@ -9,4 +9,10 @@ interface AnimeService {
         @Query("page") page: Int,
         @Query("limit") pageSize: Int
     ): AnimeResponse
+
+    @GET("anime")
+    suspend fun searchAnime(
+        @Query("q") query: String,
+        @Query("page") page: Int
+    ): AnimeResponse
 }

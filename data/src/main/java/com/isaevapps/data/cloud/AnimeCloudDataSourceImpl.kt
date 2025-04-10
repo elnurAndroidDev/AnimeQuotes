@@ -22,4 +22,15 @@ class AnimeCloudDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>> {
+        return try {
+            val animeResponse = apiService.searchAnime(query, page)
+            val anime = animeResponse.data.map { it.toDomain() }
+            val hasNextPage = animeResponse.pagination.hasNextPage
+            Resource.Success(Pair(anime, hasNextPage))
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
 }

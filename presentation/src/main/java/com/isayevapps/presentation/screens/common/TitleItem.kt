@@ -1,14 +1,13 @@
-package com.isayevapps.presentation.screens.home.animetitles
+package com.isayevapps.presentation.screens.common
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +30,14 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.request.placeholder
 import com.isayevapps.presentation.R
+import java.util.Locale
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TitleItem(
     animeId: Int,
     title: String,
+    score: Double,
     imgUrl: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -79,6 +80,18 @@ fun TitleItem(
             )
 
             Text(
+                text = String.format(Locale.US, "%.1f", score),
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .background(
+                        color = Color.Magenta,
+                        shape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
+                    )
+                    .padding(horizontal = 2.dp)
+            )
+
+            Text(
                 text = title,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
@@ -97,8 +110,15 @@ fun TitleItem(
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun TitlePreview() {
-    //TitleItem(imgUrl = "img", title = "title", modifier = Modifier.width(200.dp))
+//    TitleItem(
+//        score = 12.3f,
+//        animeId = 2,
+//        imgUrl = "img",
+//        title = "title",
+//        modifier = Modifier.width(200.dp)
+//    )
 }

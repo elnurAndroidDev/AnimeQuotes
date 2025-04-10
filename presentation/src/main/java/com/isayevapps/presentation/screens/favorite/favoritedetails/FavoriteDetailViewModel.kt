@@ -3,7 +3,6 @@ package com.isayevapps.presentation.screens.favorite.favoritedetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
-import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
 import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase

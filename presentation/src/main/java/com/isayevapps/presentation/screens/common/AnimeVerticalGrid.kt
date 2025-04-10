@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
-import com.isayevapps.presentation.screens.home.animetitles.TitleItem
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -39,6 +38,7 @@ fun AnimeVerticalGrid(
             TitleItem(
                 animeId = anime.animeId,
                 title = anime.title,
+                score = anime.score,
                 imgUrl = anime.imgUrl,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,

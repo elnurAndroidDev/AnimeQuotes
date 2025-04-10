@@ -25,8 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.isayevapps.presentation.R
-import com.isayevapps.presentation.theme.BackgroundLight
-import com.isayevapps.presentation.theme.InfoBoxColor
 import com.isayevapps.presentation.theme.Stroke
 
 @Composable

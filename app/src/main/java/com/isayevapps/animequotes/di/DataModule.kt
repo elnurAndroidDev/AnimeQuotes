@@ -7,11 +7,13 @@ import com.isaevapps.data.local.AnimeDataBase
 import com.isaevapps.data.local.dao.FavoriteDao
 import com.isayevapps.domain.repository.FavoritesRepository
 import com.isayevapps.domain.repository.Repository
+import com.isayevapps.domain.repository.SearchRepository
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
 import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
 import com.isayevapps.domain.usecase.GetFavoritesUseCase
+import com.isayevapps.domain.usecase.GetSearchResultUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
@@ -105,5 +107,11 @@ object DataModule {
         return GetFavoriteDetailUseCase(favoritesRepository)
     }
 
+    @Provides
+    @Singleton
+    fun provideGetSearchResultUseCase(searchRepository: SearchRepository): GetSearchResultUseCase {
+        return GetSearchResultUseCase(searchRepository)
+
+    }
 
 }

@@ -14,10 +14,6 @@ import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDeta
 import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDetailsScreen
 import com.isayevapps.presentation.screens.favorite.favoritesscreen.FavoritesScreen
 import com.isayevapps.presentation.screens.favorite.favoritesscreen.FavoritesViewModel
-import com.isayevapps.presentation.screens.home.animedetails.AnimeDetailViewModel
-import com.isayevapps.presentation.screens.home.animedetails.AnimeDetailsScreen
-import com.isayevapps.presentation.screens.home.animetitles.AnimeTitlesScreen
-import com.isayevapps.presentation.screens.home.animetitles.AnimeTitlesViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
