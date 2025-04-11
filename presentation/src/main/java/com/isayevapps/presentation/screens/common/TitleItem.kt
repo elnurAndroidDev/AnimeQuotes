@@ -37,7 +37,7 @@ import java.util.Locale
 fun TitleItem(
     animeId: Int,
     title: String,
-    score: Double,
+    score: Float?,
     imgUrl: String,
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
@@ -80,17 +80,18 @@ fun TitleItem(
                     }
             )
 
-            Text(
-                text = String.format(Locale.US, "%.1f", score),
-                fontSize = 14.sp,
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .background(
-                        color = Color.Magenta,
-                        shape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
-                    )
-                    .padding(horizontal = 2.dp)
-            )
+            if (score != null)
+                Text(
+                    text = String.format(Locale.US, "%.1f", score),
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .background(
+                            color = Color.Magenta,
+                            shape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
+                        )
+                        .padding(horizontal = 2.dp)
+                )
 
             Text(
                 text = title,

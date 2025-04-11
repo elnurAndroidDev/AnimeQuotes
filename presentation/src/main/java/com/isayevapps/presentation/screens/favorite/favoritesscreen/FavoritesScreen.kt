@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
-import com.isayevapps.presentation.screens.home.animetitles.LoadingScreen
+import com.isayevapps.presentation.screens.common.LoadingScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

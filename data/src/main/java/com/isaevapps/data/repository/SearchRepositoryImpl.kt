@@ -12,27 +12,7 @@ class SearchRepositoryImpl @Inject constructor(
     private val animeCloudDataSource: AnimeCloudDataSource
 ) : SearchRepository {
 
-    private var currentPage = 1
-    private var currentQuery = ""
-    private var hasNextPage = true
-
-    override suspend fun searchAnime(query: String, page: Int): Resource<List<AnimeItem>> {
-        if (query != currentQuery) {
-            currentPage = 1
-            currentQuery = query
-            hasNextPage = true
-        }
-        if (currentQuery.isBlank() || !hasNextPage)
-            return Resource.Success(emptyList())
-        val result = animeCloudDataSource.searchAnime(query, page)
-        if (result is Resource.Success) {
-            hasNextPage = result.data.second
-            if (hasNextPage)
-                currentPage++
-        }
-        return when (result) {
-            is Resource.Success -> Resource.Success(result.data.first)
-            is Resource.Error -> Resource.Error(result.error)
-        }
+    override suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>> {
+        return animeCloudDataSource.searchAnime(query, page)
     }
 }

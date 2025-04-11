@@ -95,7 +95,7 @@ fun AnimeDetailsContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    InfoBox(ico = R.drawable.genre_ico, type = "Type", text = anime.type)
+                    InfoBox(ico = R.drawable.genre_ico, type = "Type", text = anime.type.toString())
                     InfoBox(
                         ico = R.drawable.episodes_ico,
                         type = "Episodes",
@@ -132,7 +132,7 @@ fun AnimeDetailsContent(
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
-            text = anime.synopsis,
+            text = anime.synopsis ?: "No synopsis available",
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Start,
             modifier = Modifier

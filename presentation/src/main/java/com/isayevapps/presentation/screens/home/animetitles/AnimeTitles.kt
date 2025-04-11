@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
+import com.isayevapps.presentation.screens.common.LoadingScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -52,47 +53,11 @@ fun AnimeTitlesScreen(
         animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier
     )
-
-//    LaunchedEffect(isNetworkAvailable) {
-//        if (isNetworkAvailable) {
-//            Log.d("XXX", "AnimeTitlesScreen: network available")
-//            animePaging.retry()
-//        }
-//    }
-//    val uiState = viewModel.uiState
-//
-//    when (uiState) {
-//        is AnimeTitlesScreenUiState.Loading -> LoadingScreen(modifier = modifier)
-//        is AnimeTitlesScreenUiState.Success -> TitlesGrid(
-//            titles = uiState.titles,
-//            onTitleClick = { title ->
-//                navController.navigate(
-//                    Screen.AnimeDetail.createRoute(title)
-//                )
-//            },
-//            modifier = modifier
-//        )
-//
-//        is AnimeTitlesScreenUiState.Error -> ErrorScreen(modifier = modifier)
-//    }
 }
 
 @Composable
 fun ErrorScreen(modifier: Modifier) {
 
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.wrapContentSize(),
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
 }
 
 

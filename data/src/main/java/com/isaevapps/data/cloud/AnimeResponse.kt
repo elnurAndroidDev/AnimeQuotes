@@ -24,10 +24,10 @@ data class AnimeInfo(
     @SerializedName("title_english")
     val titleEng: String?,
     val images: Images,
-    val type: String,
-    val episodes: Int,
-    val score: Double,
-    val synopsis: String,
+    val type: String?,
+    val episodes: Int?,
+    val score: Float?,
+    val synopsis: String?,
     val genres: List<Genre>,
     val aired: Aired
 )
@@ -48,6 +48,6 @@ data class Genre(
 )
 
 data class Aired(
-    val from: String,
+    val from: String?,
     val to: String?
 )

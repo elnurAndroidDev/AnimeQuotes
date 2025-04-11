@@ -33,6 +33,10 @@ fun MainNavHost(
             composable<Search> {
                 SearchScreen(
                     viewModel = hiltViewModel<SearchViewModel>(),
+                    onTitleClick = {},
+                    keyPrefix = "search",
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@composable,
                     modifier = Modifier.fillMaxSize()
                 )
             }
