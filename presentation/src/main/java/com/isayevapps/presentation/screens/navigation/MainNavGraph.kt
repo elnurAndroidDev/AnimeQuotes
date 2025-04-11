@@ -5,6 +5,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +13,7 @@ import com.isayevapps.presentation.screens.favorite.favoritesNavigation
 import com.isayevapps.presentation.screens.home.HomeNavGraph
 import com.isayevapps.presentation.screens.home.homeNavigation
 import com.isayevapps.presentation.screens.search.SearchScreen
+import com.isayevapps.presentation.screens.search.SearchViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -29,7 +31,10 @@ fun MainNavHost(
             homeNavigation(navController, this@SharedTransitionLayout)
             favoritesNavigation(navController, this@SharedTransitionLayout)
             composable<Search> {
-                SearchScreen(modifier= Modifier.fillMaxSize())
+                SearchScreen(
+                    viewModel = hiltViewModel<SearchViewModel>(),
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

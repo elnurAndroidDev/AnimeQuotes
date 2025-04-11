@@ -2,7 +2,6 @@ package com.isayevapps.presentation.screens.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,10 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,10 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
-    var query by rememberSaveable { mutableStateOf("") }
+fun SearchScreen(viewModel: SearchViewModel, modifier: Modifier = Modifier) {
+    val uiState by viewModel.uiState.collectAsState()
     Column(modifier = modifier) {
-        SearchBar(query=query, onQueryChanged = { query = it })
+        SearchBar(query=uiState.query, onQueryChanged = { viewModel.onQueryChanged(it) })
     }
 }
 
@@ -99,5 +96,5 @@ fun SearchBar(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun SearchBarPreview() {
-    SearchScreen(modifier = Modifier.fillMaxSize())
+    //SearchScreen(modifier = Modifier.fillMaxSize())
 }

@@ -42,6 +42,7 @@ import com.isayevapps.presentation.theme.Stroke
 @Composable
 fun AnimeDetailsContent(
     anime: AnimeItem,
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -72,7 +73,7 @@ fun AnimeDetailsContent(
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .sharedElement(
-                            state = sharedTransitionScope.rememberSharedContentState(key = anime.animeId),
+                            state = sharedTransitionScope.rememberSharedContentState(key = "$keyPrefix ${anime.animeId}"),
                             animatedVisibilityScope = animatedVisibilityScope
                         )
                         .aspectRatio(0.7f)
@@ -114,7 +115,7 @@ fun AnimeDetailsContent(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .sharedBounds(
-                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "title ${anime.animeId}"),
+                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "$keyPrefix title ${anime.animeId}"),
                         //boundsTransform = {_,_ -> tween(3000)},
                         animatedVisibilityScope = animatedVisibilityScope
                     )

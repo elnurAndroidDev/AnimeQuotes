@@ -36,6 +36,7 @@ fun NavGraphBuilder.favoritesNavigation(
             FavoritesScreen(
                 viewModel = favoritesViewModel,
                 onTitleClick = { animeId -> navController.navigate(FavoriteAnimeDetail(animeId)) },
+                keyPrefix = "favorites",
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = this@composable,
                 modifier = Modifier.fillMaxSize()
@@ -46,6 +47,7 @@ fun NavGraphBuilder.favoritesNavigation(
             val favoriteDetailViewModel = hiltViewModel<FavoriteDetailViewModel>()
             FavoriteDetailsScreen(
                 animeId = animeDetail.animeId,
+                keyPrefix = "favorites",
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = this@composable,
                 viewModel = favoriteDetailViewModel

@@ -25,6 +25,7 @@ fun AnimeVerticalGrid(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onTitleClick: (Int) -> Unit = {},
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
@@ -40,6 +41,7 @@ fun AnimeVerticalGrid(
                 title = anime.title,
                 score = anime.score,
                 imgUrl = anime.imgUrl,
+                keyPrefix = keyPrefix,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,
                 modifier = Modifier

@@ -20,6 +20,7 @@ import com.isayevapps.presentation.screens.home.animetitles.LoadingScreen
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
     onTitleClick: (Int) -> Unit,
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -33,6 +34,7 @@ fun FavoritesScreen(
     FavoritesGrid(
         animeList = uiState.animeList,
         onTitleClick = onTitleClick,
+        keyPrefix = keyPrefix,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier
@@ -45,6 +47,7 @@ fun FavoritesScreen(
 fun FavoritesGrid(
     animeList: List<AnimeItem>,
     onTitleClick: (Int) -> Unit = {},
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
@@ -57,6 +60,7 @@ fun FavoritesGrid(
         onTitleClick = onTitleClick,
         columns = GridCells.Adaptive(150.dp),
         contentPadding = PaddingValues(4.dp),
+        keyPrefix = keyPrefix,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier,

@@ -29,6 +29,7 @@ import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 fun AnimeTitlesScreen(
     viewModel: AnimeTitlesViewModel,
     onTitleClick: (Int) -> Unit,
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
@@ -46,6 +47,7 @@ fun AnimeTitlesScreen(
             viewModel.loadAnime(LoadType.Append)
         },
         onTitleClick = onTitleClick,
+        keyPrefix = keyPrefix,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier
@@ -100,6 +102,7 @@ fun TitlesGrid(
     animeList: List<AnimeItem>,
     loadMore: () -> Unit = {},
     onTitleClick: (Int) -> Unit = {},
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
@@ -127,6 +130,7 @@ fun TitlesGrid(
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier,
         contentPadding = PaddingValues(4.dp),
+        keyPrefix = keyPrefix,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope
     )

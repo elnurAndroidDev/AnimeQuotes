@@ -18,6 +18,7 @@ import com.isayevapps.presentation.screens.common.AnimeDetailsContent
 fun AnimeDetailsScreen(
     animeId: Int,
     viewModel: AnimeDetailViewModel,
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
@@ -33,9 +34,10 @@ fun AnimeDetailsScreen(
         state.isLoading -> {}//LoadingScreen()
         state.error != null -> {}//ErrorScreen(state.error, onRetry = { viewModel.processIntent(DetailIntent.Retry) })
         state.animeItem != null -> AnimeDetailsContent(
-            state.animeItem!!,
-            sharedTransitionScope,
-            animatedVisibilityScope,
+            anime = state.animeItem!!,
+            keyPrefix = keyPrefix,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
             isFavorite = state.isFavorite,
             onToggleFavorites = { viewModel.processIntent(DetailIntent.ToggleFavorite) },
         )

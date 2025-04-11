@@ -37,6 +37,7 @@ fun NavGraphBuilder.homeNavigation(
             AnimeTitlesScreen(
                 viewModel = animeTitlesViewModel,
                 onTitleClick = { animeId -> navController.navigate(AnimeDetail(animeId)) },
+                keyPrefix = "home",
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = this@composable,
                 modifier = Modifier.fillMaxSize()
@@ -47,6 +48,7 @@ fun NavGraphBuilder.homeNavigation(
             val animeDetailViewModel = hiltViewModel<AnimeDetailViewModel>()
             AnimeDetailsScreen(
                 animeId = animeDetail.animeId,
+                keyPrefix = "home",
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = this@composable,
                 viewModel = animeDetailViewModel

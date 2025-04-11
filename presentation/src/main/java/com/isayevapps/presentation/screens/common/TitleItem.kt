@@ -39,6 +39,7 @@ fun TitleItem(
     title: String,
     score: Double,
     imgUrl: String,
+    keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
@@ -57,7 +58,7 @@ fun TitleItem(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .sharedElement(
-                        state = sharedTransitionScope.rememberSharedContentState(key = animeId),
+                        state = sharedTransitionScope.rememberSharedContentState(key = "$keyPrefix $animeId"),
                         animatedVisibilityScope = animatedVisibilityScope
                     )
                     .fillMaxWidth()
@@ -98,7 +99,7 @@ fun TitleItem(
                 color = Color.White,
                 modifier = Modifier
                     .sharedBounds(
-                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "title $animeId"),
+                        sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "$keyPrefix title $animeId"),
                         //boundsTransform = {_,_ -> tween(3000)},
                         animatedVisibilityScope = animatedVisibilityScope
                     )
