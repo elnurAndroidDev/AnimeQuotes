@@ -2,6 +2,11 @@ package com.isaevapps.data.cloud
 
 import com.google.gson.annotations.SerializedName
 
+data class OneAnimeResponse(
+    @SerializedName("data")
+    val data: AnimeInfo
+)
+
 data class AnimeResponse(
     @SerializedName("data")
     val data: List<AnimeInfo>,

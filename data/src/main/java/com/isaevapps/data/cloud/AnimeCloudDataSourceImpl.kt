@@ -22,6 +22,16 @@ class AnimeCloudDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAnimeById(animeId: Int): Resource<AnimeItem> {
+        return try {
+            val animeResponse = apiService.getAnimeById(animeId)
+            val anime = animeResponse.data.toDomain()
+            Resource.Success(anime)
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
     override suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>> {
         return try {
             val animeResponse = apiService.searchAnime(query, page)

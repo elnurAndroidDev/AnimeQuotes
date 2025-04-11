@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.search
+package com.isayevapps.presentation.screens.search.searchscreen
 
 import com.isayevapps.domain.AnimeItem
 

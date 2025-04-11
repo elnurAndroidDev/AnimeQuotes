@@ -11,6 +11,7 @@ import com.isayevapps.domain.repository.SearchRepository
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
+import com.isayevapps.domain.usecase.GetDetailsFromCloudUseCase
 import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
 import com.isayevapps.domain.usecase.GetFavoritesUseCase
 import com.isayevapps.domain.usecase.GetSearchResultUseCase
@@ -111,7 +112,12 @@ object DataModule {
     @Singleton
     fun provideGetSearchResultUseCase(searchRepository: SearchRepository): GetSearchResultUseCase {
         return GetSearchResultUseCase(searchRepository)
+    }
 
+    @Provides
+    @Singleton
+    fun provideGetDetailsFromCloudUseCase(repository: Repository): GetDetailsFromCloudUseCase {
+        return GetDetailsFromCloudUseCase(repository)
     }
 
 }

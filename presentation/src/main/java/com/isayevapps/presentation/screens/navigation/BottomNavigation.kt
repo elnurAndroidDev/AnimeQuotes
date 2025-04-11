@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.isayevapps.presentation.R
 import com.isayevapps.presentation.screens.favorite.FavoritesNavGraph
 import com.isayevapps.presentation.screens.home.HomeNavGraph
+import com.isayevapps.presentation.screens.search.SearchNavGraph
 
 data class BottomNavItem<T : Any>(
     val route: T,
@@ -33,7 +34,7 @@ data class BottomNavItem<T : Any>(
     companion object {
         fun items() = listOf(
             BottomNavItem(HomeNavGraph, Icons.Filled.Home, Icons.Outlined.Home, R.string.top_anime),
-            BottomNavItem(Search, Icons.Filled.Search, Icons.Outlined.Search, R.string.search),
+            BottomNavItem(SearchNavGraph, Icons.Filled.Search, Icons.Outlined.Search, R.string.search),
             BottomNavItem(
                 FavoritesNavGraph,
                 Icons.Filled.Favorite,

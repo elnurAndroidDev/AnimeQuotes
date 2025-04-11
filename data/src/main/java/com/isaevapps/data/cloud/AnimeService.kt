@@ -1,6 +1,7 @@
 package com.isaevapps.data.cloud
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AnimeService {
@@ -15,4 +16,11 @@ interface AnimeService {
         @Query("q") query: String,
         @Query("page") page: Int
     ): AnimeResponse
+
+    @GET("anime/{id}")
+    suspend fun getAnimeById(
+        @Path("id") animeId: Int
+    ): OneAnimeResponse
+
+
 }
