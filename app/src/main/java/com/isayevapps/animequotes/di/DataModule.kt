@@ -5,6 +5,7 @@ import com.isaevapps.data.cloud.AnimeService
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
 import com.isaevapps.data.local.dao.FavoriteDao
+import com.isayevapps.animequotes.network.AppDispatchers
 import com.isayevapps.domain.repository.FavoritesRepository
 import com.isayevapps.domain.repository.Repository
 import com.isayevapps.domain.repository.SearchRepository
@@ -23,6 +24,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -74,26 +76,26 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideLoadAnimeUseCase(repository: Repository): LoadAnimeUseCase {
-        return LoadAnimeUseCase(repository)
+    fun provideLoadAnimeUseCase(repository: Repository, dispatchers: AppDispatchers): LoadAnimeUseCase {
+        return LoadAnimeUseCase(repository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideAddToFavoriteUseCase(favoritesRepository: FavoritesRepository): AddToFavoritesUseCase {
-        return AddToFavoritesUseCase(favoritesRepository)
+    fun provideAddToFavoriteUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): AddToFavoritesUseCase {
+        return AddToFavoritesUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideIsFavoriteUseCase(favoritesRepository: FavoritesRepository): IsFavoriteUseCase {
-        return IsFavoriteUseCase(favoritesRepository)
+    fun provideIsFavoriteUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): IsFavoriteUseCase {
+        return IsFavoriteUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideRemoveFromFavoritesUseCase(favoritesRepository: FavoritesRepository): RemoveFromFavoritesUseCase {
-        return RemoveFromFavoritesUseCase(favoritesRepository)
+    fun provideRemoveFromFavoritesUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): RemoveFromFavoritesUseCase {
+        return RemoveFromFavoritesUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
@@ -104,20 +106,20 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideGetFavoriteDetailUseCase(favoritesRepository: FavoritesRepository): GetFavoriteDetailUseCase {
-        return GetFavoriteDetailUseCase(favoritesRepository)
+    fun provideGetFavoriteDetailUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): GetFavoriteDetailUseCase {
+        return GetFavoriteDetailUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideGetSearchResultUseCase(searchRepository: SearchRepository): GetSearchResultUseCase {
-        return GetSearchResultUseCase(searchRepository)
+    fun provideGetSearchResultUseCase(searchRepository: SearchRepository, dispatchers: AppDispatchers): GetSearchResultUseCase {
+        return GetSearchResultUseCase(searchRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideGetDetailsFromCloudUseCase(repository: Repository): GetDetailsFromCloudUseCase {
-        return GetDetailsFromCloudUseCase(repository)
+    fun provideGetDetailsFromCloudUseCase(repository: Repository, dispatchers: AppDispatchers): GetDetailsFromCloudUseCase {
+        return GetDetailsFromCloudUseCase(repository, dispatchers.io)
     }
 
 }

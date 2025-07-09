@@ -26,7 +26,7 @@ import com.isayevapps.presentation.screens.navigation.MainNavHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimeApp(modifier: Modifier = Modifier) {
+fun AnimeApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val navController = rememberNavController()
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
