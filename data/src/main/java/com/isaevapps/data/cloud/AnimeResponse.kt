@@ -44,8 +44,6 @@ data class Images(
 data class Jpg(
     @SerializedName("image_url")
     val imageUrl: String,
-    @SerializedName("large_image_url")
-    val largeImageUrl: String
 )
 
 data class Genre(
