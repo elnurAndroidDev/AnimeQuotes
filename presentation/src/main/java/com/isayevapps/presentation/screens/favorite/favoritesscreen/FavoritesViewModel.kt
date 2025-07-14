@@ -6,13 +6,14 @@ import com.isayevapps.domain.usecase.GetFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val getFavoritesUseCase: GetFavoritesUseCase,
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(FavoriteScreenUiState(isLoading = true))
     val uiState: StateFlow<FavoriteScreenUiState> = _uiState
 
@@ -23,7 +24,12 @@ class FavoritesViewModel @Inject constructor(
     private fun observeAnime() {
         viewModelScope.launch {
             getFavoritesUseCase().collect { animeList ->
-                _uiState.value = _uiState.value.copy(animeList = animeList)
+                _uiState.update {
+                    it.copy(
+                        animeList = animeList,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
