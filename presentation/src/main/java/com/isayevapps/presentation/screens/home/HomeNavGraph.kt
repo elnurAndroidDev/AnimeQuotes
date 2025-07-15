@@ -33,9 +33,7 @@ fun NavGraphBuilder.homeNavigation(
 ) {
     navigation<HomeNavGraph>(startDestination = TopAnime) {
         composable<TopAnime> {
-            val animeTitlesViewModel = hiltViewModel<AnimeTitlesViewModel>()
             AnimeTitlesScreen(
-                viewModel = animeTitlesViewModel,
                 onTitleClick = { animeId -> navController.navigate(AnimeDetail(animeId)) },
                 keyPrefix = "home",
                 sharedTransitionScope = sharedTransitionScope,
