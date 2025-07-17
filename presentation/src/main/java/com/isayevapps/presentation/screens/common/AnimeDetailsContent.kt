@@ -51,10 +51,7 @@ fun AnimeDetailsContent(
 ) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = modifier
-            .verticalScroll(scrollState)
-            .fillMaxSize()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+        modifier = modifier.verticalScroll(scrollState)
     ) {
         with(sharedTransitionScope) {
             ConstraintLayout(

@@ -9,6 +9,7 @@ import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,14 +33,11 @@ class AnimeDetailViewModel @Inject constructor(
 
     private fun loadAnimeDetails(animeId: Int) {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.update { it.copy(isLoading = true) }
             val isFavorite = isFavoriteUseCase(animeId)
-            _state.value = _state.value.copy(isFavorite = isFavorite)
+            _state.update { it.copy(isFavorite = isFavorite) }
             getAnimeDetailsUseCase(animeId).collect { anime ->
-                _state.value = _state.value.copy(
-                    isLoading = false,
-                    animeItem = anime
-                )
+                _state.update { it.copy(animeItem = anime, isLoading = false) }
             }
         }
     }
@@ -51,7 +49,7 @@ class AnimeDetailViewModel @Inject constructor(
                 removeFromFavoritesUseCase(_state.value.animeItem!!.animeId)
             else
                 addToFavoritesUseCase(_state.value.animeItem!!)
-            _state.value = _state.value.copy(isFavorite = !isFavorite)
+            _state.update { it.copy(isFavorite = !isFavorite) }
         }
     }
 }

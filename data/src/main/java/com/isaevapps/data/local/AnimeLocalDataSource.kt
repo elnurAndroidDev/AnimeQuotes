@@ -2,6 +2,8 @@ package com.isaevapps.data.local
 
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.dao.FavoriteDao
+import com.isaevapps.data.local.dao.SearchHistoryDao
+import com.isaevapps.data.local.entities.SearchQuery
 import com.isaevapps.data.toAnimeEntity
 import com.isaevapps.data.toDomain
 import com.isaevapps.data.toFavoriteEntity
@@ -15,7 +17,8 @@ import javax.inject.Singleton
 @Singleton
 class AnimeLocalDataSourceImpl @Inject constructor(
     private val animeDao: AnimeDao,
-    private val favoriteDao: FavoriteDao
+    private val favoriteDao: FavoriteDao,
+    private val searchHistoryDao: SearchHistoryDao
 ) : AnimeLocalDataSource {
 
     override suspend fun insertAll(animeList: List<AnimeItem>) {
@@ -40,6 +43,18 @@ class AnimeLocalDataSourceImpl @Inject constructor(
 
     override suspend fun getFavoriteAnimeDetails(animeId: Int): AnimeItem? {
         return favoriteDao.getFavoriteAnimeDetails(animeId)?.toDomain()
+    }
+
+    override suspend fun getSuggestions(input: String): List<String> {
+        return searchHistoryDao.getSuggestions(input).map { it.query }
+    }
+
+    override suspend fun insert(query: String) {
+        searchHistoryDao.insert(SearchQuery(query = query))
+    }
+
+    override suspend fun deleteExact(query: String) {
+        searchHistoryDao.deleteExact(query)
     }
 
     override fun getAllAnime(): Flow<List<AnimeItem>> {

@@ -20,26 +20,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
+import com.isayevapps.presentation.screens.common.EmptyScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun FavoritesScreen(
-    viewModel: FavoritesViewModel,
     onTitleClick: (Int) -> Unit,
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
+    val viewModel = hiltViewModel<FavoritesViewModel>()
     val uiState by viewModel.uiState.collectAsState()
 
     when {
         uiState.isLoading -> LoadingScreen(modifier)
-        uiState.animeList.isEmpty() -> EmptyScreen(modifier)
+        uiState.animeList.isEmpty() -> EmptyScreen(
+            icon = Icons.Outlined.FavoriteBorder,
+            contentDescription = "Favorite Icon",
+            text = "No favorites yet",
+            modifier = modifier
+        )
         else -> {
             FavoritesGrid(
                 animeList = uiState.animeList,
@@ -77,28 +85,4 @@ fun FavoritesGrid(
         animatedVisibilityScope = animatedVisibilityScope,
         modifier = modifier,
     )
-}
-
-@Composable
-fun EmptyScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.FavoriteBorder,
-            contentDescription = "Empty favorites",
-            modifier = Modifier.size(128.dp),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
-        Text(
-            text = "No favorites yet",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-            modifier = Modifier.padding(top = 16.dp)
-        )
-    }
 }

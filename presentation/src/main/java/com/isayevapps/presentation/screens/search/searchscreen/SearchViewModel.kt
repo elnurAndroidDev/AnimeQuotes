@@ -1,9 +1,7 @@
 package com.isayevapps.presentation.screens.search.searchscreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.usecase.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,10 +25,6 @@ class SearchViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(query = query)
     }
 
-    fun getAnimeItemById(animeId: Int): AnimeItem {
-        return _uiState.value.animeList.find { it.animeId == animeId }!!
-    }
-
     fun loadMore() {
         if (!hasNextPage)
             return
@@ -39,8 +33,9 @@ class SearchViewModel @Inject constructor(
             val result = getSearchResultUseCase(_uiState.value.query, ++currentPage)
             when (result) {
                 is Resource.Success -> {
+                    val animeList = result.data.first.distinctBy { it.animeId }
                     _uiState.value = _uiState.value.copy(
-                        animeList = _uiState.value.animeList + result.data.first,
+                        animeList = _uiState.value.animeList + animeList,
                         isLoading = false
                     )
                     hasNextPage = result.data.second
@@ -59,16 +54,15 @@ class SearchViewModel @Inject constructor(
         if (_uiState.value.query.isBlank())
             return
         viewModelScope.launch {
-            Log.d("SearchViewModel", "searchAnime: started")
             _uiState.value = _uiState.value.copy(isLoading = true)
             currentPage = 1
             val result = getSearchResultUseCase(_uiState.value.query, 1)
             when (result) {
                 is Resource.Success -> {
+                    val animeList = result.data.first.distinctBy { it.animeId }
                     _uiState.value =
-                        _uiState.value.copy(animeList = result.data.first, isLoading = false)
+                        _uiState.value.copy(animeList = animeList, isLoading = false)
                     hasNextPage = result.data.second
-                    Log.d("SearchViewModel", "searchAnime: ${uiState.value.animeList.size}")
                 }
 
                 is Resource.Error -> {

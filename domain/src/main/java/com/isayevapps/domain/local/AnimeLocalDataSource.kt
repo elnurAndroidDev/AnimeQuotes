@@ -14,4 +14,9 @@ interface AnimeLocalDataSource {
     fun getAllFavorite(): Flow<List<AnimeItem>>
     suspend fun isFavorite(animeId: Int): Boolean
     suspend fun getFavoriteAnimeDetails(animeId: Int): AnimeItem?
+
+    suspend fun getSuggestions(input: String): List<String>
+    suspend fun insert(query: String)
+    suspend fun deleteExact(query: String)
+
 }

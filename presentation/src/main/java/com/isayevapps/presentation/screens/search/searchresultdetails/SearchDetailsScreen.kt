@@ -10,8 +10,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.screens.common.AnimeDetailsContent
+import com.isayevapps.presentation.screens.common.ErrorScreen
+import com.isayevapps.presentation.screens.common.LoadingScreen
 import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDetailsIntent
 
 
@@ -19,22 +22,26 @@ import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDeta
 @Composable
 fun SearchDetailsScreen(
     animeId: Int,
-    viewModel: SearchDetailViewModel,
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
 
+    val viewModel = hiltViewModel<SearchDetailViewModel>()
+    val state by viewModel.state.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails(animeId))
     }
 
-    val state by viewModel.state.collectAsState()
-
     when {
-        state.isLoading -> {}//LoadingScreen()
-        state.error != null -> {}//ErrorScreen(state.error, onRetry = { viewModel.processIntent(DetailIntent.Retry) })
+        state.isLoading -> LoadingScreen(modifier)
+        state.error != null -> ErrorScreen(
+            error = state.error!!,
+            onRetry = { viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails(animeId)) },
+            modifier = modifier
+        )
         state.animeItem != null -> AnimeDetailsContent(
             anime = state.animeItem!!,
             keyPrefix = keyPrefix,

@@ -35,6 +35,7 @@ import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 import com.isayevapps.presentation.screens.common.LoadingScreen
 import com.isayevapps.presentation.R
+import com.isayevapps.presentation.screens.common.ErrorScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -69,32 +70,6 @@ fun AnimeTitlesScreen(
         }
     }
 }
-
-@Composable
-fun ErrorScreen(error: String, onRetry: () -> Unit, modifier: Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = error,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.error
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            RetryButton(onRetry = onRetry)
-        }
-    }
-}
-
-@Composable
-fun RetryButton(onRetry: () -> Unit) {
-    OutlinedButton(onClick = onRetry) {
-        Text(text = stringResource(R.string.retry))
-    }
-}
-
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

@@ -13,7 +13,6 @@ import androidx.navigation.toRoute
 import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDetailViewModel
 import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDetailsScreen
 import com.isayevapps.presentation.screens.favorite.favoritesscreen.FavoritesScreen
-import com.isayevapps.presentation.screens.favorite.favoritesscreen.FavoritesViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -32,9 +31,7 @@ fun NavGraphBuilder.favoritesNavigation(
 ) {
     navigation<FavoritesNavGraph>(startDestination = FavoritesList) {
         composable<FavoritesList> {
-            val favoritesViewModel = hiltViewModel<FavoritesViewModel>()
             FavoritesScreen(
-                viewModel = favoritesViewModel,
                 onTitleClick = { animeId -> navController.navigate(FavoriteAnimeDetail(animeId)) },
                 keyPrefix = "favorites",
                 sharedTransitionScope = sharedTransitionScope,
@@ -50,7 +47,8 @@ fun NavGraphBuilder.favoritesNavigation(
                 keyPrefix = "favorites",
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = this@composable,
-                viewModel = favoriteDetailViewModel
+                viewModel = favoriteDetailViewModel,
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

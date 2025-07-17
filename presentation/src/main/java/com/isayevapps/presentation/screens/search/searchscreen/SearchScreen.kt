@@ -23,6 +23,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,20 +37,22 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
+import com.isayevapps.presentation.screens.common.EmptyScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel,
     onTitleClick: (Int) -> Unit = {},
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
+    val viewModel = hiltViewModel<SearchViewModel>()
     val uiState by viewModel.uiState.collectAsState()
     Column(modifier = modifier) {
         SearchBar(
@@ -58,19 +61,24 @@ fun SearchScreen(
             onSearchClick = viewModel::searchAnime
         )
 
-        if (uiState.animeList.isEmpty() && uiState.isLoading) {
-            LoadingScreen(modifier)
+        when {
+            uiState.isLoading -> LoadingScreen(modifier)
+            uiState.animeList.isEmpty() -> EmptyScreen(
+                icon = Icons.Outlined.Close,
+                contentDescription = "No Results",
+                text = "No results found",
+                modifier = modifier
+            )
+            else -> SearchResultGrid(
+                animeList = uiState.animeList,
+                loadMore = viewModel::loadMore,
+                onTitleClick = onTitleClick,
+                keyPrefix = keyPrefix,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
+                modifier = modifier
+            )
         }
-
-        SearchResultGrid(
-            animeList = uiState.animeList,
-            loadMore = viewModel::loadMore,
-            onTitleClick = onTitleClick,
-            keyPrefix = keyPrefix,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedVisibilityScope = animatedVisibilityScope,
-            modifier = modifier
-        )
     }
 }
 

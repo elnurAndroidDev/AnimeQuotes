@@ -11,4 +11,8 @@ data class AnimeItem(
     val genres: List<String>,
     val airedFrom: String? = null,
     val airedTo: String? = null
-)
+) {
+    override fun toString(): String {
+        return "AnimeItem(animeId=$animeId, title='$title')"
+    }
+}

@@ -10,15 +10,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.isayevapps.domain.AnimeItem
-import com.isayevapps.presentation.screens.home.animedetails.AnimeDetailViewModel
-import com.isayevapps.presentation.screens.home.animedetails.AnimeDetailsScreen
-import com.isayevapps.presentation.screens.home.animetitles.AnimeTitlesScreen
-import com.isayevapps.presentation.screens.home.animetitles.AnimeTitlesViewModel
 import com.isayevapps.presentation.screens.search.searchresultdetails.SearchDetailViewModel
 import com.isayevapps.presentation.screens.search.searchresultdetails.SearchDetailsScreen
 import com.isayevapps.presentation.screens.search.searchscreen.SearchScreen
-import com.isayevapps.presentation.screens.search.searchscreen.SearchViewModel
 import kotlinx.serialization.Serializable
 
 
@@ -38,9 +32,7 @@ fun NavGraphBuilder.searchNavigation(
 ) {
     navigation<SearchNavGraph>(startDestination = SearchResult) {
         composable<SearchResult> {
-            val searchViewModel = hiltViewModel<SearchViewModel>()
             SearchScreen(
-                viewModel = searchViewModel,
                 onTitleClick = { animeId ->
                     navController.navigate(SearchDetail(animeId))
                 },
@@ -52,13 +44,11 @@ fun NavGraphBuilder.searchNavigation(
         }
         composable<SearchDetail> { backStackEntry ->
             val searchDetail: SearchDetail = backStackEntry.toRoute()
-            val searchDetailViewModel = hiltViewModel<SearchDetailViewModel>()
             SearchDetailsScreen(
                 animeId = searchDetail.animeId,
                 keyPrefix = "search",
                 sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = this@composable,
-                viewModel = searchDetailViewModel
+                animatedVisibilityScope = this@composable
             )
         }
     }
