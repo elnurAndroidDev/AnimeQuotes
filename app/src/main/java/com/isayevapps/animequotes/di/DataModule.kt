@@ -5,6 +5,7 @@ import com.isaevapps.data.cloud.AnimeService
 import com.isaevapps.data.local.dao.AnimeDao
 import com.isaevapps.data.local.AnimeDataBase
 import com.isaevapps.data.local.dao.FavoriteDao
+import com.isaevapps.data.local.dao.SearchHistoryDao
 import com.isayevapps.animequotes.network.AppDispatchers
 import com.isayevapps.domain.repository.FavoritesRepository
 import com.isayevapps.domain.repository.Repository
@@ -54,6 +55,12 @@ object DataModule {
     @Singleton
     fun provideAnimeDao(database: AnimeDataBase): AnimeDao {
         return database.animeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchHistoryDao(database: AnimeDataBase): SearchHistoryDao {
+        return database.searchHistoryDao()
     }
 
     @Provides

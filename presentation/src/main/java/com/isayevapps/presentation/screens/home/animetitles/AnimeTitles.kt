@@ -34,7 +34,6 @@ import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 import com.isayevapps.presentation.screens.common.LoadingScreen
-import com.isayevapps.presentation.R
 import com.isayevapps.presentation.screens.common.ErrorScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -51,7 +50,7 @@ fun AnimeTitlesScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     when {
-        uiState.isLoading -> LoadingScreen(modifier)
+        uiState.animeList.isEmpty() && uiState.isLoading -> LoadingScreen(modifier)
         uiState.error != null -> ErrorScreen(
             error = uiState.error!!,
             onRetry = { viewModel.loadAnime(LoadType.Refresh) },
