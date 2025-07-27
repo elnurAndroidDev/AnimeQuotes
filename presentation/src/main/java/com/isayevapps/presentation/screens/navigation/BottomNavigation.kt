@@ -70,13 +70,15 @@ fun BottomBar(
                         FavoritesNavGraph -> currentRoute == FavoritesList.routeName
                         else -> false
                     }
+                    Log.d("BottomBar", "BottomBar: $isOnRoot")
                     if (isOnRoot) return@NavigationBarItem
 
                     onItemSelected(BottomNavItem.items().indexOf(item))
                     navController.navigate(item.route) {
                         when (item.route) {
                             HomeNavGraph -> popUpTo(TopAnime) { inclusive = false }
-                            FavoritesNavGraph -> popUpTo(FavoritesList) { inclusive = false }
+                            FavoritesNavGraph -> popUpTo(FavoritesList) { inclusive = true }
+                            SearchNavGraph -> popUpTo(Search) { inclusive = true }
                             else ->
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
