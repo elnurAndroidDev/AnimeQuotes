@@ -17,16 +17,20 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.isayevapps.presentation.R
 import com.isayevapps.presentation.screens.favorite.FavoritesList
 import com.isayevapps.presentation.screens.favorite.FavoritesNavGraph
 import com.isayevapps.presentation.screens.home.HomeNavGraph
 import com.isayevapps.presentation.screens.home.TopAnime
 import com.isayevapps.presentation.screens.search.SearchNavGraph
+import com.isayevapps.presentation.screens.search.SearchResult
 
 data class BottomNavItem<T : Any>(
     val route: T,
@@ -55,34 +59,21 @@ val Any.routeName: String
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun BottomBar(
-    navController: NavHostController, selectedItemIndex: Int, onItemSelected: (Int) -> Unit
-) {
+fun BottomBar(navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     NavigationBar {
         BottomNavItem.items().forEach { item ->
-            val isSelected = selectedItemIndex == BottomNavItem.items().indexOf(item)
+            val isSelected = currentDestination?.hierarchy?.any {
+                it.route == item.route.routeName
+            } == true
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    val currentRoute = navController.currentBackStackEntry?.destination?.route
-                    val isOnRoot = when (item.route) {
-                        HomeNavGraph -> currentRoute == TopAnime.routeName
-                        FavoritesNavGraph -> currentRoute == FavoritesList.routeName
-                        else -> false
-                    }
-                    Log.d("BottomBar", "BottomBar: $isOnRoot")
-                    if (isOnRoot) return@NavigationBarItem
-
-                    onItemSelected(BottomNavItem.items().indexOf(item))
                     navController.navigate(item.route) {
-                        when (item.route) {
-                            HomeNavGraph -> popUpTo(TopAnime) { inclusive = false }
-                            FavoritesNavGraph -> popUpTo(FavoritesList) { inclusive = true }
-                            SearchNavGraph -> popUpTo(Search) { inclusive = true }
-                            else ->
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true

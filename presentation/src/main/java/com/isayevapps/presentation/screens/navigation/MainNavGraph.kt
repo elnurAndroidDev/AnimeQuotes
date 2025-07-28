@@ -12,9 +12,6 @@ import com.isayevapps.presentation.screens.home.homeNavigation
 import com.isayevapps.presentation.screens.search.searchNavigation
 import kotlinx.serialization.Serializable
 
-@Serializable
-object Search
-
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainNavHost(

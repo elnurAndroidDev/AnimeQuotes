@@ -1,5 +1,7 @@
 package com.isayevapps.presentation
 
+import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -12,32 +14,40 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.isayevapps.presentation.screens.navigation.BottomBar
 import com.isayevapps.presentation.screens.navigation.BottomNavItem
 import com.isayevapps.presentation.screens.navigation.MainNavHost
+import com.isayevapps.presentation.screens.navigation.routeName
 
 
+@SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val navController = rememberNavController()
-    var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val selectedItemIndex = BottomNavItem.items().indexOfFirst { item ->
+        currentDestination?.hierarchy?.any { it.route == item.route.routeName } == true
+    }.coerceAtLeast(0)
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { AnimeQuoteTopAppBar(scrollBehavior = scrollBehavior, selectedItemIndex) },
+        topBar = {
+            AnimeQuoteTopAppBar(
+                scrollBehavior = scrollBehavior,
+                label = BottomNavItem.items()[selectedItemIndex].label
+            )
+        },
         bottomBar = {
-            BottomBar(
-                navController,
-                selectedItemIndex,
-                onItemSelected = { selectedItemIndex = it })
+            BottomBar(navController)
         }
     ) { innerPadding ->
         Surface(
@@ -53,14 +63,14 @@ fun AnimeApp() {
 @Composable
 fun AnimeQuoteTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
-    selectedItemIndex: Int,
+    @StringRes label: Int,
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
             Text(
-                text = stringResource(BottomNavItem.items()[selectedItemIndex].label),
+                text = stringResource(label),
                 style = MaterialTheme.typography.headlineSmall,
             )
         },
