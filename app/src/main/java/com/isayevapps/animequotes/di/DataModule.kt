@@ -11,12 +11,15 @@ import com.isayevapps.domain.repository.FavoritesRepository
 import com.isayevapps.domain.repository.Repository
 import com.isayevapps.domain.repository.SearchRepository
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
+import com.isayevapps.domain.usecase.DeleteSearchQueryUseCase
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.GetAnimeDetailsUseCase
 import com.isayevapps.domain.usecase.GetDetailsFromCloudUseCase
 import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
 import com.isayevapps.domain.usecase.GetFavoritesUseCase
+import com.isayevapps.domain.usecase.GetFullSearchHistoryUseCase
 import com.isayevapps.domain.usecase.GetSearchResultUseCase
+import com.isayevapps.domain.usecase.InsertSearchQueryUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
@@ -25,7 +28,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -83,25 +85,37 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideLoadAnimeUseCase(repository: Repository, dispatchers: AppDispatchers): LoadAnimeUseCase {
+    fun provideLoadAnimeUseCase(
+        repository: Repository,
+        dispatchers: AppDispatchers
+    ): LoadAnimeUseCase {
         return LoadAnimeUseCase(repository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideAddToFavoriteUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): AddToFavoritesUseCase {
+    fun provideAddToFavoriteUseCase(
+        favoritesRepository: FavoritesRepository,
+        dispatchers: AppDispatchers
+    ): AddToFavoritesUseCase {
         return AddToFavoritesUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideIsFavoriteUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): IsFavoriteUseCase {
+    fun provideIsFavoriteUseCase(
+        favoritesRepository: FavoritesRepository,
+        dispatchers: AppDispatchers
+    ): IsFavoriteUseCase {
         return IsFavoriteUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideRemoveFromFavoritesUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): RemoveFromFavoritesUseCase {
+    fun provideRemoveFromFavoritesUseCase(
+        favoritesRepository: FavoritesRepository,
+        dispatchers: AppDispatchers
+    ): RemoveFromFavoritesUseCase {
         return RemoveFromFavoritesUseCase(favoritesRepository, dispatchers.io)
     }
 
@@ -113,20 +127,55 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideGetFavoriteDetailUseCase(favoritesRepository: FavoritesRepository, dispatchers: AppDispatchers): GetFavoriteDetailUseCase {
+    fun provideGetFavoriteDetailUseCase(
+        favoritesRepository: FavoritesRepository,
+        dispatchers: AppDispatchers
+    ): GetFavoriteDetailUseCase {
         return GetFavoriteDetailUseCase(favoritesRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideGetSearchResultUseCase(searchRepository: SearchRepository, dispatchers: AppDispatchers): GetSearchResultUseCase {
+    fun provideGetSearchResultUseCase(
+        searchRepository: SearchRepository,
+        dispatchers: AppDispatchers
+    ): GetSearchResultUseCase {
         return GetSearchResultUseCase(searchRepository, dispatchers.io)
     }
 
     @Provides
     @Singleton
-    fun provideGetDetailsFromCloudUseCase(repository: Repository, dispatchers: AppDispatchers): GetDetailsFromCloudUseCase {
+    fun provideGetDetailsFromCloudUseCase(
+        repository: Repository,
+        dispatchers: AppDispatchers
+    ): GetDetailsFromCloudUseCase {
         return GetDetailsFromCloudUseCase(repository, dispatchers.io)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFullHistoryUseCase(
+        searchRepository: SearchRepository
+    ): GetFullSearchHistoryUseCase {
+        return GetFullSearchHistoryUseCase(searchRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsertSearchQueryUseCase(
+        searchRepository: SearchRepository,
+        dispatchers: AppDispatchers
+    ): InsertSearchQueryUseCase {
+        return InsertSearchQueryUseCase(searchRepository, dispatchers.io)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteSearchQueryUseCase(
+        searchRepository: SearchRepository,
+        dispatchers: AppDispatchers
+    ): DeleteSearchQueryUseCase {
+        return DeleteSearchQueryUseCase(searchRepository, dispatchers.io)
     }
 
 }

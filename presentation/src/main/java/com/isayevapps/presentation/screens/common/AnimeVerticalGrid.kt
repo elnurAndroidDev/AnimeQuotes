@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.isayevapps.domain.AnimeItem
 
+/**
+ * Composable function to display a vertical grid of anime titles.
+ */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AnimeVerticalGrid(
@@ -53,5 +56,4 @@ fun AnimeVerticalGrid(
             )
         }
     }
-
 }

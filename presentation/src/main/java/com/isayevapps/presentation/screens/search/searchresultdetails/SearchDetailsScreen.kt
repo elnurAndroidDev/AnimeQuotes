@@ -4,24 +4,22 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.isayevapps.domain.AnimeItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.isayevapps.presentation.screens.common.AnimeDetailsContent
 import com.isayevapps.presentation.screens.common.ErrorScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
-import com.isayevapps.presentation.screens.favorite.favoritedetails.FavoriteDetailsIntent
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchDetailsScreen(
-    animeId: Int,
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -29,17 +27,13 @@ fun SearchDetailsScreen(
 ) {
 
     val viewModel = hiltViewModel<SearchDetailViewModel>()
-    val state by viewModel.state.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails(animeId))
-    }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     when {
         state.isLoading -> LoadingScreen(modifier)
         state.error != null -> ErrorScreen(
             error = state.error!!,
-            onRetry = { viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails(animeId)) },
+            onRetry = { viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails) },
             modifier = modifier
         )
         state.animeItem != null -> AnimeDetailsContent(
@@ -49,6 +43,7 @@ fun SearchDetailsScreen(
             animatedVisibilityScope = animatedVisibilityScope,
             isFavorite = state.isFavorite,
             onToggleFavorites = { viewModel.processIntent(SearchDetailsIntent.ToggleFavorite) },
+            modifier = modifier.padding(16.dp)
         )
     }
 }

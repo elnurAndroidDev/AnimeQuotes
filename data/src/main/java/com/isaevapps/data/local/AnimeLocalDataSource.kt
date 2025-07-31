@@ -45,8 +45,9 @@ class AnimeLocalDataSourceImpl @Inject constructor(
         return favoriteDao.getFavoriteAnimeDetails(animeId)?.toDomain()
     }
 
-    override suspend fun getSuggestions(input: String): List<String> {
-        return searchHistoryDao.getSuggestions(input).map { it.query }
+    override fun getFullHistory(): Flow<List<String>> {
+        return searchHistoryDao.getFullHistory()
+            .map { it.map { queryList -> queryList.query } }
     }
 
     override suspend fun insert(query: String) {

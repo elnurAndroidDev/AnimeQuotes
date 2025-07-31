@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.isayevapps.presentation.screens.common.AnimeDetailsContent
-import com.isayevapps.presentation.screens.common.ErrorScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
 
 

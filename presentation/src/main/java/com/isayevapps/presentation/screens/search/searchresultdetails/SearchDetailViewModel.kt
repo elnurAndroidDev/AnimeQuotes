@@ -1,17 +1,19 @@
 package com.isayevapps.presentation.screens.search.searchresultdetails
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetDetailsFromCloudUseCase
-import com.isayevapps.domain.usecase.GetFavoriteDetailUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,20 +23,29 @@ class SearchDetailViewModel @Inject constructor(
     private val getDetailsFromCloudUseCase: GetDetailsFromCloudUseCase,
     private val isFavoriteUseCase: IsFavoriteUseCase,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
-    private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase
+    private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SearchDetailsUiState(isLoading = true))
+    private val animeId: Int = checkNotNull(savedStateHandle["animeId"])
+
+    private val _state = MutableStateFlow(SearchDetailsUiState())
     val state: StateFlow<SearchDetailsUiState> = _state
+        .onStart { loadAnimeDetails()  }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SearchDetailsUiState()
+        )
 
     fun processIntent(intent: SearchDetailsIntent) {
         when (intent) {
-            is SearchDetailsIntent.LoadAnimeDetails -> loadAnimeDetails(intent.animeId)
+            is SearchDetailsIntent.LoadAnimeDetails -> loadAnimeDetails()
             is SearchDetailsIntent.ToggleFavorite -> toggleFavorite()
         }
     }
 
-    private fun loadAnimeDetails(animeId: Int) {
+    private fun loadAnimeDetails() {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
             val result = getDetailsFromCloudUseCase(animeId)

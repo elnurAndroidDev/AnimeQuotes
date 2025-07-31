@@ -10,7 +10,6 @@ import com.isayevapps.presentation.screens.favorite.favoritesNavigation
 import com.isayevapps.presentation.screens.home.HomeNavGraph
 import com.isayevapps.presentation.screens.home.homeNavigation
 import com.isayevapps.presentation.screens.search.searchNavigation
-import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

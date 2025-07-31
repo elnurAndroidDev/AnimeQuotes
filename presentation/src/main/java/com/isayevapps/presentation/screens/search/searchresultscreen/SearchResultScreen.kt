@@ -1,4 +1,4 @@
-package com.isayevapps.presentation.screens.home.animetitles
+package com.isayevapps.presentation.screens.search.searchresultscreen
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -6,60 +6,59 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
-import com.isayevapps.presentation.screens.common.ErrorScreen
+import com.isayevapps.presentation.screens.common.EmptyScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeTitlesScreen(
-    onTitleClick: (Int) -> Unit,
+fun SearchResultScreen(
+    modifier: Modifier = Modifier,
+    onTitleClick: (Int) -> Unit = {},
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    modifier: Modifier = Modifier,
 ) {
-    val viewModel = hiltViewModel<AnimeTitlesViewModel>()
-    val isNetworkAvailable by viewModel.isNetworkAvailableFlow.collectAsState(initial = false)
+    val viewModel = hiltViewModel<SearchResultViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when {
         uiState.isLoading -> LoadingScreen(modifier)
-        uiState.error != null -> ErrorScreen(
-            error = uiState.error!!,
-            onRetry = { viewModel.loadAnime(LoadType.Refresh) },
+        uiState.animeList.isEmpty() -> EmptyScreen(
+            icon = Icons.Outlined.Close,
+            contentDescription = "No Results",
+            text = "No results found",
             modifier = modifier
         )
-        else -> {
-            TitlesGrid(
-                animeList = uiState.animeList,
-                loadMore = { viewModel.loadAnime(LoadType.Append) },
-                onTitleClick = onTitleClick,
-                keyPrefix = keyPrefix,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
-                modifier = modifier
-            )
-        }
+
+        else -> SearchResultGrid(
+            animeList = uiState.animeList,
+            loadMore = { viewModel.load(LoadType.Append) },
+            onTitleClick = onTitleClick,
+            keyPrefix = keyPrefix,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
+            modifier = modifier
+        )
     }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TitlesGrid(
+fun SearchResultGrid(
     animeList: List<AnimeItem>,
     loadMore: () -> Unit = {},
     onTitleClick: (Int) -> Unit = {},
@@ -95,10 +94,4 @@ fun TitlesGrid(
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope
     )
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun TitleGridPreview() {
-    //TitlesGrid()
 }

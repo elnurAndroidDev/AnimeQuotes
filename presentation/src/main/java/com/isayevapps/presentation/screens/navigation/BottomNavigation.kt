@@ -1,7 +1,6 @@
 package com.isayevapps.presentation.screens.navigation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -25,12 +24,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.isayevapps.presentation.R
-import com.isayevapps.presentation.screens.favorite.FavoritesList
 import com.isayevapps.presentation.screens.favorite.FavoritesNavGraph
 import com.isayevapps.presentation.screens.home.HomeNavGraph
-import com.isayevapps.presentation.screens.home.TopAnime
 import com.isayevapps.presentation.screens.search.SearchNavGraph
-import com.isayevapps.presentation.screens.search.SearchResult
 
 data class BottomNavItem<T : Any>(
     val route: T,

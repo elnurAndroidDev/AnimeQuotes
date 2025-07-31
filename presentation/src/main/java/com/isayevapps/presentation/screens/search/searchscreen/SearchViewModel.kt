@@ -2,75 +2,60 @@ package com.isayevapps.presentation.screens.search.searchscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.cloud.Resource
-import com.isayevapps.domain.usecase.GetSearchResultUseCase
+import com.isayevapps.domain.usecase.DeleteSearchQueryUseCase
+import com.isayevapps.domain.usecase.GetFullSearchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("OPT_IN_USAGE")
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getSearchResultUseCase: GetSearchResultUseCase
+    private val getFullSearchHistoryUseCase: GetFullSearchHistoryUseCase,
+    private val deleteSearchQueryUseCase: DeleteSearchQueryUseCase
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(SearchScreenUiState())
     val uiState: StateFlow<SearchScreenUiState> = _uiState
 
-    private var currentPage = 1
-    private var hasNextPage = false
+    init {
+        _uiState
+            .map { it.query }
+            .distinctUntilChanged()
+            .flatMapLatest { query ->
+                getFullSearchHistoryUseCase().map { list ->
+                    if (query.isBlank()) list
+                    else list.filter { it.contains(query, ignoreCase = true) }
+                }
+            }
+            .onEach { suggestions ->
+                _uiState.update { it.copy(suggestions = suggestions) }
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun onQueryChanged(query: String) {
-        _uiState.value = _uiState.value.copy(query = query)
+        _uiState.update { it.copy(query = query) }
     }
 
-    fun loadMore() {
-        if (!hasNextPage)
-            return
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            val result = getSearchResultUseCase(_uiState.value.query, ++currentPage)
-            when (result) {
-                is Resource.Success -> {
-                    val animeList = result.data.first.distinctBy { it.animeId }
-                    _uiState.value = _uiState.value.copy(
-                        animeList = _uiState.value.animeList + animeList,
-                        isLoading = false
-                    )
-                    hasNextPage = result.data.second
-                }
-
-                is Resource.Error -> {
-                    _uiState.value =
-                        _uiState.value.copy(error = result.error.toString(), isLoading = false)
-                }
-            }
-
-        }
+    fun showDeleteDialog(item: String) {
+        _uiState.update { it.copy(showDialog = true, itemToDelete = item) }
     }
 
-    fun searchAnime() {
-        if (_uiState.value.query.isBlank())
-            return
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            currentPage = 1
-            val result = getSearchResultUseCase(_uiState.value.query, 1)
-            when (result) {
-                is Resource.Success -> {
-                    val animeList = result.data.first.distinctBy { it.animeId }
-                    _uiState.value =
-                        _uiState.value.copy(animeList = animeList, isLoading = false)
-                    hasNextPage = result.data.second
-                }
+    fun hideDeleteDialog() {
+        _uiState.update { it.copy(showDialog = false, itemToDelete = "") }
+    }
 
-                is Resource.Error -> {
-                    _uiState.value =
-                        _uiState.value.copy(error = result.error.toString(), isLoading = false)
-                }
-            }
-        }
+    fun deleteQuery() = viewModelScope.launch {
+        deleteSearchQueryUseCase(_uiState.value.itemToDelete)
+        hideDeleteDialog()
     }
 
 }

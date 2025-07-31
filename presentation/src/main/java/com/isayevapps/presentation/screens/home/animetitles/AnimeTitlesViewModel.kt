@@ -37,7 +37,8 @@ class AnimeTitlesViewModel @Inject constructor(
     }
 
     fun loadAnime(loadType: LoadType) = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true) }
+        if (loadType == LoadType.Refresh)
+            _uiState.update { it.copy(isLoading = true) }
         val result = loadAnimeUseCase(loadType)
         if (result is LoadResult.Error)
             _uiState.update { it.copy(error = result.error.toString(), isLoading = false) }
