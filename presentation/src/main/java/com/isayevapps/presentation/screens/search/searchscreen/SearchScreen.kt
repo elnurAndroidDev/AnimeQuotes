@@ -1,5 +1,8 @@
 package com.isayevapps.presentation.screens.search.searchscreen
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,10 +18,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.isayevapps.presentation.screens.common.components.SearchBar
 import com.isayevapps.presentation.screens.common.components.SearchHistoryList
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    onSearchClick: (String) -> Unit = {}
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onSearchClick: (String) -> Unit = {},
 ) {
     val viewModel = hiltViewModel<SearchViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -27,7 +33,10 @@ fun SearchScreen(
         SearchBar(
             query = uiState.query,
             onQueryChanged = { viewModel.onQueryChanged(it) },
-            onSearchClick = onSearchClick
+            onSearchClick = onSearchClick,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
+            keyPrefix = "searchbar1"
         )
         SearchHistoryList(
             historyList = uiState.suggestions,

@@ -3,6 +3,7 @@ package com.isayevapps.presentation.screens.search.searchresultscreen
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -22,12 +23,14 @@ import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 import com.isayevapps.presentation.screens.common.EmptyScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
+import com.isayevapps.presentation.screens.common.components.SearchBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchResultScreen(
     modifier: Modifier = Modifier,
     onTitleClick: (Int) -> Unit = {},
+    navigateToSearchScreen: () -> Unit = {},
     keyPrefix: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -35,24 +38,34 @@ fun SearchResultScreen(
     val viewModel = hiltViewModel<SearchResultViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    when {
-        uiState.isLoading -> LoadingScreen(modifier)
-        uiState.animeList.isEmpty() -> EmptyScreen(
-            icon = Icons.Outlined.Close,
-            contentDescription = "No Results",
-            text = "No results found",
-            modifier = modifier
-        )
-
-        else -> SearchResultGrid(
-            animeList = uiState.animeList,
-            loadMore = { viewModel.load(LoadType.Append) },
-            onTitleClick = onTitleClick,
-            keyPrefix = keyPrefix,
+    Column(modifier = modifier) {
+        SearchBar(
+            query = viewModel.query,
+            keyPrefix = "searchbar1",
+            onClick = navigateToSearchScreen,
+            showClearButton = false,
             sharedTransitionScope = sharedTransitionScope,
-            animatedVisibilityScope = animatedVisibilityScope,
-            modifier = modifier
+            animatedVisibilityScope = animatedVisibilityScope
         )
+        when {
+            uiState.isLoading -> LoadingScreen(modifier)
+            uiState.animeList.isEmpty() -> EmptyScreen(
+                icon = Icons.Outlined.Close,
+                contentDescription = "No Results",
+                text = "No results found",
+                modifier = modifier
+            )
+
+            else -> SearchResultGrid(
+                animeList = uiState.animeList,
+                loadMore = { viewModel.load(LoadType.Append) },
+                onTitleClick = onTitleClick,
+                keyPrefix = keyPrefix,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
+                modifier = modifier
+            )
+        }
     }
 }
 

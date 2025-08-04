@@ -22,7 +22,7 @@ class SearchResultViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val insertSearchQueryUseCase: InsertSearchQueryUseCase
 ) : ViewModel() {
-    private val query: String = checkNotNull(savedStateHandle["query"])
+    val query: String = checkNotNull(savedStateHandle["query"])
 
     private val _uiState = MutableStateFlow(SearchResultScreenUiState())
     val uiState = _uiState

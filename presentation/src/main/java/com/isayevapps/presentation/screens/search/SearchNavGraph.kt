@@ -35,6 +35,8 @@ fun NavGraphBuilder.searchNavigation(
         composable<SearchQuery> {
             SearchScreen(
                 modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = this@composable,
                 onSearchClick = { query ->
                     navController.navigate(SearchResult(query))
                 }
