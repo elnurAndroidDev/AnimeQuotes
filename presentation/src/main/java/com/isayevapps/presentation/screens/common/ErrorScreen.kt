@@ -12,12 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.isayevapps.presentation.R
 
 @Composable
-fun ErrorScreen(error: String, onRetry: () -> Unit, modifier: Modifier) {
+fun ErrorScreen(error: String, onRetry: () -> Unit = {}, modifier: Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -26,7 +27,8 @@ fun ErrorScreen(error: String, onRetry: () -> Unit, modifier: Modifier) {
             Text(
                 text = error,
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             RetryButton(onRetry = onRetry)

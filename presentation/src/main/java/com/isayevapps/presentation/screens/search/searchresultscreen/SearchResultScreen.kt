@@ -15,6 +15,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +23,7 @@ import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.presentation.screens.common.AnimeVerticalGrid
 import com.isayevapps.presentation.screens.common.EmptyScreen
+import com.isayevapps.presentation.screens.common.ErrorScreen
 import com.isayevapps.presentation.screens.common.LoadingScreen
 import com.isayevapps.presentation.screens.common.components.SearchBar
 
@@ -49,6 +51,11 @@ fun SearchResultScreen(
         )
         when {
             uiState.isLoading -> LoadingScreen(modifier)
+            uiState.error != null -> ErrorScreen(
+                error = uiState.error!!.asString(LocalContext.current),
+                onRetry = { viewModel.load(LoadType.Refresh) },
+                modifier = modifier
+            )
             uiState.animeList.isEmpty() -> EmptyScreen(
                 icon = Icons.Outlined.Close,
                 contentDescription = "No Results",

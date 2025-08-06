@@ -7,6 +7,7 @@ import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.domain.result.Result
 import com.isayevapps.domain.usecase.GetSearchResultUseCase
 import com.isayevapps.domain.usecase.InsertSearchQueryUseCase
+import com.isayevapps.presentation.utils.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,8 +41,11 @@ class SearchResultViewModel @Inject constructor(
         if (!hasNextPage)
             return
         viewModelScope.launch {
-            if (loadType == LoadType.Refresh)
-                _uiState.update { it.copy(isLoading = true) }
+            if (loadType == LoadType.Refresh) {
+                currentPage = 1
+                hasNextPage = true
+                _uiState.update { it.copy(isLoading = true, error = null) }
+            }
             when (val result = getSearchResultUseCase(query, currentPage++)) {
                 is Result.Success -> {
                     val animeList = result.data.first.distinctBy { it.animeId }
@@ -56,7 +60,7 @@ class SearchResultViewModel @Inject constructor(
                 }
                 is Result.Error -> {
                     _uiState.update {
-                        it.copy(error = result.error.toString(), isLoading = false)
+                        it.copy(error = result.error.toUiText(), isLoading = false)
                     }
                 }
             }

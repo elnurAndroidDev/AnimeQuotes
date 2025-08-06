@@ -8,6 +8,7 @@ import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetDetailsFromCloudUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
 import com.isayevapps.domain.usecase.RemoveFromFavoritesUseCase
+import com.isayevapps.presentation.utils.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -58,7 +59,7 @@ class SearchDetailViewModel @Inject constructor(
                 }
                 is Result.Error -> {
                     _state.value = _state.value.copy(
-                        error = result.error.toString(),
+                        error = result.error.toUiText(),
                         isLoading = false
                     )
                 }

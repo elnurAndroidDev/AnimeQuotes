@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +33,7 @@ fun SearchDetailsScreen(
     when {
         state.isLoading -> LoadingScreen(modifier)
         state.error != null -> ErrorScreen(
-            error = state.error!!,
+            error = state.error!!.asString(LocalContext.current),
             onRetry = { viewModel.processIntent(SearchDetailsIntent.LoadAnimeDetails) },
             modifier = modifier
         )

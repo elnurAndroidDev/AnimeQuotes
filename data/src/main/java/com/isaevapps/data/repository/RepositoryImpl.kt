@@ -3,7 +3,6 @@ package com.isaevapps.data.repository
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.AnimeCloudDataSource
 import com.isayevapps.domain.local.AnimeLocalDataSource
-import com.isayevapps.domain.repository.LoadResult
 import com.isayevapps.domain.repository.LoadType
 import com.isayevapps.domain.repository.Repository
 import com.isayevapps.domain.result.CloudError

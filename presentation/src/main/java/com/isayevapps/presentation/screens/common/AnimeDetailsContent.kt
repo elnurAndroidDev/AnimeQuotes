@@ -83,10 +83,12 @@ fun AnimeDetailsContent(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
+                        .padding(start = 16.dp)
                         .constrainAs(info) {
                             top.linkTo(img.top)
                             bottom.linkTo(img.bottom)
                             end.linkTo(parent.end)
+                            start.linkTo(img.end)
                         },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween

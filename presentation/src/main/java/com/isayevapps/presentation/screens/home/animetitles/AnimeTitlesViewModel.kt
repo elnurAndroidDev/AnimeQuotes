@@ -8,6 +8,7 @@ import com.isayevapps.domain.result.Result
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.utils.NetworkMonitor
+import com.isayevapps.presentation.utils.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,10 +40,10 @@ class AnimeTitlesViewModel @Inject constructor(
 
     fun loadAnime(loadType: LoadType) = viewModelScope.launch {
         if (loadType == LoadType.Refresh)
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(isLoading = true, error = null) }
         val result = loadAnimeUseCase(loadType)
         if (result is Result.Error)
-            _uiState.update { it.copy(error = result.error.toString(), isLoading = false) }
+            _uiState.update { it.copy(error = result.error.toUiText(), isLoading = false) }
         else
             _uiState.update { it.copy(isLoading = false) }
     }

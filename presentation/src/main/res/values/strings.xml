@@ -4,4 +4,8 @@
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="retry">Retry</string>
+    <string name="no_internet">No internet connection. Please check your connection and try again.</string>
+    <string name="server_error">A server error occurred. Please try again later.</string>
+    <string name="timeout">The request timed out. Please try again.</string>
+    <string name="unknown_error">An unknown error occurred. Please try again.</string>
 </resources>
