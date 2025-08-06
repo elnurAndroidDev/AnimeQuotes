@@ -20,6 +20,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +58,7 @@ fun SearchBar(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "Search Icon"
                 )
             },
@@ -65,6 +67,7 @@ fun SearchBar(
                     IconButton(onClick = onClearClick) {
                         Icon(
                             imageVector = Icons.Default.Close,
+                            tint = MaterialTheme.colorScheme.onBackground,
                             contentDescription = "Clear Search"
                         )
                     }
@@ -84,6 +87,7 @@ fun SearchBar(
                 .border(1.dp, Color.Gray, RoundedCornerShape(12.dp))
                 .background(Color.Transparent),
             colors = TextFieldDefaults.textFieldColors(
+                textColor = MaterialTheme.colorScheme.onBackground,
                 backgroundColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent

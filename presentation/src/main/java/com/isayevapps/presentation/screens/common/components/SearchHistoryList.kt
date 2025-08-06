@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,10 +66,11 @@ fun SearchHistoryItem(
         ) {
             Icon(
                 painter = painterResource(R.drawable.history),
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.size(16.dp),
-                contentDescription = "Delete"
+                contentDescription = "History"
             )
-            Text(text = historyItem, fontWeight = FontWeight.Bold)
+            Text(text = historyItem, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold)
         }
     }
 }
