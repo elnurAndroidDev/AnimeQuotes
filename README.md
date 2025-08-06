@@ -3,13 +3,12 @@ Top Anime is a modern Android application that showcases top anime, built with *
 It follows best practices in modularization, state management, and UI/UX design.
 
 <p align="center"> 
-  <img src="![photo_2025-08-06_23-24-05](https://github.com/user-attachments/assets/17f82fb8-2e43-4ebc-aa62-ba0710d295d2)" width="30%" /> 
-  <img src="![photo_2025-08-06_23-23-59](https://github.com/user-attachments/assets/c5aa9642-21c1-4bfe-b369-0b2b82d3d5f7)" width="30%" /> 
-  <img src="![photo_2025-08-06_23-24-04](https://github.com/user-attachments/assets/c277b484-efa5-4251-a868-ec8c4256f676)" width="30%" /> </p> 
-<!-- <p align="center"> 
-  <img src="screenshots/screen4.png" width="30%" /> 
-  <img src="screenshots/screen5.png" width="30%" /> 
-  <img src="screenshots/screen6.png" width="30%" /> </p> -->
+  <img src="https://github.com/user-attachments/assets/17f82fb8-2e43-4ebc-aa62-ba0710d295d2" width="20%" /> 
+  <img src="https://github.com/user-attachments/assets/c5aa9642-21c1-4bfe-b369-0b2b82d3d5f7" width="20%" /> 
+  <img src="https://github.com/user-attachments/assets/c277b484-efa5-4251-a868-ec8c4256f676" width="20%" /> </p> 
+<p align="center"> 
+  <img src="https://github.com/user-attachments/assets/cdfaf851-e92a-4270-8dcb-46c24352d070" width="20%" /> 
+  <img src="https://github.com/user-attachments/assets/bdb7edf8-98d5-484d-9a82-24467bb80e6d" width="20%" /> </p>
 
 ## 📱 Features
 
