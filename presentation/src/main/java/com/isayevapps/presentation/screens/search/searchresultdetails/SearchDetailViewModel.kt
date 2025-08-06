@@ -3,7 +3,7 @@ package com.isayevapps.presentation.screens.search.searchresultdetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.cloud.Resource
+import com.isayevapps.domain.result.Result
 import com.isayevapps.domain.usecase.AddToFavoritesUseCase
 import com.isayevapps.domain.usecase.GetDetailsFromCloudUseCase
 import com.isayevapps.domain.usecase.IsFavoriteUseCase
@@ -50,13 +50,13 @@ class SearchDetailViewModel @Inject constructor(
             _state.value = _state.value.copy(isLoading = true)
             val result = getDetailsFromCloudUseCase(animeId)
             when (result) {
-                is Resource.Success -> {
+                is Result.Success -> {
                     _state.value = _state.value.copy(
                         animeItem = result.data,
                         isLoading = false
                     )
                 }
-                is Resource.Error -> {
+                is Result.Error -> {
                     _state.value = _state.value.copy(
                         error = result.error.toString(),
                         isLoading = false

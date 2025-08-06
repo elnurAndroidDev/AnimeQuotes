@@ -3,7 +3,8 @@ package com.isaevapps.data.cloud
 import com.isaevapps.data.toDomain
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.AnimeCloudDataSource
-import com.isayevapps.domain.cloud.Resource
+import com.isayevapps.domain.result.CloudError
+import com.isayevapps.domain.result.Result
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,35 +13,32 @@ class AnimeCloudDataSourceImpl @Inject constructor(
     private val apiService: AnimeService
 ) : AnimeCloudDataSource {
 
-    override suspend fun getAnime(page: Int, pageSize: Int): Resource<List<AnimeItem>> {
-        return try {
-            val animeResponse = apiService.getAnime(page, pageSize)
-            val anime = animeResponse.data.map { it.toDomain() }
-            Resource.Success(anime)
-        } catch (e: Exception) {
-            Resource.Error(e)
-        }
+    override suspend fun getAnime(page: Int, pageSize: Int): Result<List<AnimeItem>, CloudError> {
+        return safeApiCall(
+            apiCall = { apiService.getAnime(page, pageSize) },
+            map = { response -> response.data.map { it.toDomain() } }
+        )
     }
 
-    override suspend fun getAnimeById(animeId: Int): Resource<AnimeItem> {
-        return try {
-            val animeResponse = apiService.getAnimeById(animeId)
-            val anime = animeResponse.data.toDomain()
-            Resource.Success(anime)
-        } catch (e: Exception) {
-            Resource.Error(e)
-        }
+    override suspend fun getAnimeById(animeId: Int): Result<AnimeItem, CloudError> {
+        return safeApiCall(
+            apiCall = { apiService.getAnimeById(animeId) },
+            map = { response -> response.data.toDomain() }
+        )
     }
 
-    override suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>> {
-        return try {
-            val animeResponse = apiService.searchAnime(query, page)
-            val anime = animeResponse.data.map { it.toDomain() }
-            val hasNextPage = animeResponse.pagination.hasNextPage
-            Resource.Success(Pair(anime, hasNextPage))
-        } catch (e: Exception) {
-            Resource.Error(e)
-        }
+    override suspend fun searchAnime(
+        query: String,
+        page: Int
+    ): Result<Pair<List<AnimeItem>, Boolean>, CloudError> {
+        return safeApiCall(
+            apiCall = { apiService.searchAnime(query, page) },
+            map = { response ->
+                val animeList = response.data.map { it.toDomain() }
+                val hasNextPage = response.pagination.hasNextPage
+                Pair(animeList, hasNextPage)
+            }
+        )
     }
 
 }

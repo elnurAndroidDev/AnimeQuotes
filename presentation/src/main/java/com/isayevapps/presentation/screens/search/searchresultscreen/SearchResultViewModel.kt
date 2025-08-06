@@ -3,8 +3,8 @@ package com.isayevapps.presentation.screens.search.searchresultscreen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.repository.LoadType
+import com.isayevapps.domain.result.Result
 import com.isayevapps.domain.usecase.GetSearchResultUseCase
 import com.isayevapps.domain.usecase.InsertSearchQueryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +43,7 @@ class SearchResultViewModel @Inject constructor(
             if (loadType == LoadType.Refresh)
                 _uiState.update { it.copy(isLoading = true) }
             when (val result = getSearchResultUseCase(query, currentPage++)) {
-                is Resource.Success -> {
+                is Result.Success -> {
                     val animeList = result.data.first.distinctBy { it.animeId }
                     _uiState.update {
                         it.copy(
@@ -54,7 +54,7 @@ class SearchResultViewModel @Inject constructor(
                     insertSearchQueryUseCase(query)
                     hasNextPage = result.data.second
                 }
-                is Resource.Error -> {
+                is Result.Error -> {
                     _uiState.update {
                         it.copy(error = result.error.toString(), isLoading = false)
                     }

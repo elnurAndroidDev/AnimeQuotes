@@ -2,9 +2,10 @@ package com.isaevapps.data.repository
 
 import com.isayevapps.domain.AnimeItem
 import com.isayevapps.domain.cloud.AnimeCloudDataSource
-import com.isayevapps.domain.cloud.Resource
 import com.isayevapps.domain.local.AnimeLocalDataSource
 import com.isayevapps.domain.repository.SearchRepository
+import com.isayevapps.domain.result.CloudError
+import com.isayevapps.domain.result.Result
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,7 +16,7 @@ class SearchRepositoryImpl @Inject constructor(
     private val animeLocalDataSource: AnimeLocalDataSource
 ) : SearchRepository {
 
-    override suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>> {
+    override suspend fun searchAnime(query: String, page: Int): Result<Pair<List<AnimeItem>, Boolean>, CloudError> {
         return animeCloudDataSource.searchAnime(query, page)
     }
 

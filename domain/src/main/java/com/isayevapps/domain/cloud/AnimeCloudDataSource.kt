@@ -1,11 +1,15 @@
 package com.isayevapps.domain.cloud
 
 import com.isayevapps.domain.AnimeItem
+import com.isayevapps.domain.result.CloudError
+import com.isayevapps.domain.result.Result
 
 interface AnimeCloudDataSource {
-    suspend fun getAnime(page: Int, pageSize: Int): Resource<List<AnimeItem>>
-    suspend fun getAnimeById(animeId: Int): Resource<AnimeItem>
+    suspend fun getAnime(page: Int, pageSize: Int): Result<List<AnimeItem>, CloudError>
+    suspend fun getAnimeById(animeId: Int): Result<AnimeItem, CloudError>
 
-    //Boolean - hasNextPage
-    suspend fun searchAnime(query: String, page: Int): Resource<Pair<List<AnimeItem>, Boolean>>
+    suspend fun searchAnime(
+        query: String,
+        page: Int
+    ): Result<Pair<List<AnimeItem>, Boolean>, CloudError>
 }

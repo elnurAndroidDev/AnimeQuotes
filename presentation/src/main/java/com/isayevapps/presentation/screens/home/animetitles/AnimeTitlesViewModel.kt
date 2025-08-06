@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.isayevapps.domain.repository.LoadResult
 import com.isayevapps.domain.repository.LoadType
+import com.isayevapps.domain.result.Result
 import com.isayevapps.domain.usecase.GetAllAnimeUseCase
 import com.isayevapps.domain.usecase.LoadAnimeUseCase
 import com.isayevapps.domain.utils.NetworkMonitor
@@ -40,7 +41,7 @@ class AnimeTitlesViewModel @Inject constructor(
         if (loadType == LoadType.Refresh)
             _uiState.update { it.copy(isLoading = true) }
         val result = loadAnimeUseCase(loadType)
-        if (result is LoadResult.Error)
+        if (result is Result.Error)
             _uiState.update { it.copy(error = result.error.toString(), isLoading = false) }
         else
             _uiState.update { it.copy(isLoading = false) }
